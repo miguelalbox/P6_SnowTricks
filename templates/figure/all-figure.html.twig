@@ -3,5 +3,29 @@
 {% block title %}Hello FigureController!{% endblock %}
 
 {% block body %}
-All figures
+    <div id="all-figures">
+        <div class="section-one">
+            <div class="first-picture">
+                <img src="/images/test.jpg" alt="">
+            </div>
+        </div>
+        <div class="section-two">
+            <div class="articles">
+                {% for figure in figures  %}
+                <div class="article">
+                    <div class="image">
+                        <img src="/images/media/figures-img/1.jpeg" alt="">
+                    </div>
+                    <div class="title">
+                        <a href="{{ path('single_figure', {'id': figure.id}) }}">{{ figure.title }}</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+
+
 {% endblock %}

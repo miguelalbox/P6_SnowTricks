@@ -1,0 +1,24 @@
+/*All figures*/
+#all-figures{
+    max-width: 1920px;
+    margin: auto;
+}
+#all-figures .section-one .first-picture img{
+    width: 100%;
+    max-width: 1920px;
+    height: 500px;
+    object-fit: cover;
+}
+#all-figures .section-two .articles{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#all-figures .section-two .articles .article{
+    width: 320px;
+    margin: 10px 30px;
+}
+#all-figures .section-two .articles .article .image img{
+    width: 100%;
+}

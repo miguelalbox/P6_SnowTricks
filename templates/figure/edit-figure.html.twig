@@ -5,20 +5,15 @@
 {% block body %}
     <div id="figure" class="container">
         <div class="portrait">
-            <img class="portrait-img" src="" alt="">
+            <img class="portrait-img" src="/images/test.jpg" alt="">
         </div>
-        <div class="media">
-            <div class="pictures">
-                <div class="picture">
+        {{ form_start(form2) }}
 
-                </div>
-            </div>
-            <div class="videos">
-                <div class="video">
-
-                </div>
-            </div>
+        <div class="btn-form">
+            <button type="submit" class="btn-send">Envoyer</button>
+            <a class="btn-reject" href="{{ path('all_figure') }}">Annuler</a>
         </div>
+        {{ form_end(form2) }}
         <div class="description">
             {{ form_start(form) }}
             <div class="title">
@@ -36,5 +31,6 @@
             </div>
             {{ form_end(form) }}
         </div>
+        <a href="{{ path('delete_figure', {'slug': figure.slug}) }}">Supprimer</a>
     </div>
 {% endblock %}
