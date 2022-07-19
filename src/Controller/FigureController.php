@@ -117,13 +117,23 @@ class FigureController extends AbstractController
             $figure->setUpdatedAt(new \DateTime());
             $manager->persist($figure);
             $manager->flush();
-        }
 
+            return $this->redirectToRoute('all_figure');
+        }
+        //$figures = $figure->getId();
+        //dd($figures);
     $media = new Media;
     $form2 = $this->createForm(MediaType::class, $media);
     $form2->handleRequest($request);
-        /*TODO if ($form2->isSubmitted() && $form2->isValid()) {
-        }*/
+        if ($form2->isSubmitted() && $form2->isValid()) {
+
+            $media->setImage(true);
+            $media->setFigure($figure);
+
+            $manager->persist($media);
+            $manager->flush();
+        }
+
 
         return $this->render('figure/edit-figure.html.twig', [
             'form' => $form->createView(),

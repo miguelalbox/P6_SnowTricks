@@ -12,14 +12,21 @@
         <div class="section-two">
             <div class="articles">
                 {% for figure in figures  %}
-                <div class="article">
-                    <div class="image">
-                        <img src="/images/media/figures-img/1.jpeg" alt="">
-                    </div>
-                    <div class="title">
-                        <a href="{{ path('single_figure', {'id': figure.id}) }}">{{ figure.title }}</a>
-                    </div>
-                </div>
+                    <a href="{{ path('single_figure', {'id': figure.id}) }}">
+                        <div class="article">
+                            <div class="image">
+                                <img src="/images/media/figures-img/1.jpeg" alt="">
+                            </div>
+                            <div class="title">
+                                <p>{{ figure.title }}</p>
+                                <div class="btn-action">
+                                    <a href="{{ path('edit_figure', {'slug': figure.slug} ) }}">edit</a>
+                                    <a href="{{ path('delete_figure', {'slug': figure.slug}) }}">del</a>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
                 {% endfor %}
             </div>
         </div>
