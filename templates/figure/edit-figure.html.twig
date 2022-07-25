@@ -7,13 +7,22 @@
         <div class="portrait">
             <img class="portrait-img" src="/images/test.jpg" alt="">
         </div>
-        {{ form_start(form2) }}
+        <h1>Ajouter Image</h1>
+        {{ form_start(formImages) }}
 
         <div class="btn-form">
             <button type="submit" class="btn-send">Envoyer</button>
             <a class="btn-reject" href="{{ path('all_figure') }}">Annuler</a>
         </div>
-        {{ form_end(form2) }}
+        {{ form_end(formImages) }}
+        <h1>Ajouter video</h1>
+        {{ form_start(formVideo) }}
+
+        <div class="btn-form">
+            <button type="submit" class="btn-send">Envoyer</button>
+            <a class="btn-reject" href="{{ path('all_figure') }}">Annuler</a>
+        </div>
+        {{ form_end(formVideo) }}
         <div class="description">
             {{ form_start(form) }}
             <div class="title">
