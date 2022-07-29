@@ -17,10 +17,18 @@ class FigureType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Titre'
+                'label' => 'Titre',
+                'attr' => [
+                    'placeholder' => 'Ajoutez le titre de votre figure'
+                ]
             ])
             ->add('description', TextareaType::class, [
-                'label' => 'Description'
+                'label' => 'Description',
+                'attr' => [
+                    'rows' => '10',
+                    'cols' => '10',
+                    'placeholder' => 'Ajoutez la description de votre figure'
+                ]
             ])
             ->add('groups', EntityType::class, [
                 'class' => Groups::class,

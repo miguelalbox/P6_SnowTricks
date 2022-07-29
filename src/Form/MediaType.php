@@ -19,7 +19,7 @@ class MediaType extends AbstractType
                 'label' => 'Fichier'
             ])
             ->add('main', CheckboxType::class, [
-                'label' => 'Portrait',
+                'label' => 'Utiliser de portrait',
                 'required' => false,
             ])
         ;

@@ -12,8 +12,6 @@ use App\Repository\GroupsRepository;
 use App\Repository\MediaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,6 +19,11 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class FigureController extends AbstractController
 {
+    //Generer un nom unique pour les fichiers
+    private function generateUniqueFileName()
+    {
+        return md5(uniqid());
+    }
     #[Route('/figures', name: 'all_figure')]
     public function all(FiguresRepository $figuresRepo): Response
     {
@@ -73,13 +76,6 @@ class FigureController extends AbstractController
 
             $figure->setCreatedAt(new \DateTimeImmutable());
 
-            //ajout de media
-            /*$media = $form->get('Media')->getData();
-            foreach ($medias as $media){
-                new Media
-            }*/
-
-
             $manager->persist($figure);
             $manager->flush();
             $this->addFlash("success", "La figure a bien été ajouté" );
@@ -95,9 +91,37 @@ class FigureController extends AbstractController
     public function edit( FiguresRepository $figureRepo, MediaRepository $mediaRepo, $slug, Request $request, EntityManagerInterface $manager): Response
     {
     $figure = $figureRepo->findOneBy(['slug' => $slug]);
+    $medias = $mediaRepo->findOneBy(['image' => true]);
 
-    $form = $this->createForm(FigureType::class, $figure);
-    $form->handleRequest($request);
+        $media = new Media;
+        $formImages = $this->createForm(MediaType::class, $media);
+        $formImages->handleRequest($request);
+        if ($formImages->isSubmitted() && $formImages->isValid()) {
+
+            $img = $request->files->get('media')['url'];
+            $figureImgName = $this->generateUniqueFileName() . '.' . $img->guessExtension();
+
+
+            $img->move(
+                $this->getParameter('figures_img_directory'),
+                $figureImgName
+            );
+            $media->setImage(true)
+                ->setFigure($figure)
+                ->setUrl($figureImgName);
+
+            if ($media->isMain() != false){
+                $oldMain = $mediaRepo->findOneBy(['main' => true]);
+                if ($oldMain){
+                    $oldMain->setMain(false);
+                }
+            }
+
+            $manager->persist($media);
+            $manager->flush();
+
+            return $this->redirect($request->getUri());
+        }
 
         $video = new Media();
         $videoForm = $this->createForm(VideoType::class, $video);
@@ -115,6 +139,9 @@ class FigureController extends AbstractController
 
             return $this->redirect($request->getUri());
         }
+
+        $form = $this->createForm(FigureType::class, $figure);
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -140,62 +167,14 @@ class FigureController extends AbstractController
 
             return $this->redirectToRoute('all_figure');
         }
-        //$figures = $figure->getId();
-        //dd($figures);
-
-    $media = new Media;
-        $formImages = $this->createForm(MediaType::class, $media);
-        $formImages->handleRequest($request);
-        if ($formImages->isSubmitted() && $formImages->isValid()) {
-
-            $img = $request->files->get('media')['url'];
-
-            /*TODO Modifier la route de fichiers image*/
-            $image = $media->getUrl();
-            $figureImgName = 'figure-'.$slug . '.' . $img->guessExtension();
-            $img->move(
-              $this->getParameter('figures_img_directory'),
-              $figureImgName
-            );
-            $media->setImage(true)
-                    ->setFigure($figure)
-                    ->setUrl($figureImgName);
-
-            if ($media->isMain() != false){
-                $oldMain = $mediaRepo->findOneBy(['main' => true]);
-                if ($oldMain){
-                    $oldMain->setMain(false);
-                }
-            }
-
-            $manager->persist($media);
-            $manager->flush();
-        }
-
-
-
-       /*$formVideos = $this->createForm(MediaType::class, $media);
-        $formVideos->handleRequest($request);
-        if ($formVideos->isSubmitted() && $formVideos->isValid()) {
-
-
-            $formVideo = $request->request->get("url");
-
-            $media->setImage(false);
-            $media->setUrl($formVideo);
-            $media->setFigure($figure);
-
-            $manager->persist($media);
-            $manager->flush();
-        }*/
 
 
         return $this->render('figure/edit-figure.html.twig', [
             'form' => $form->createView(),
             'figure' => $figure,
+            'medias' => $medias,
             'formImages' => $formImages->createView(),
             'formVideo' => $videoForm->createView(),
-            //'$formVideos' => $formVideos->createView(),
         ]);
     }
     #[Route('/figures/suprimer/{slug}', name: 'delete_figure')]
@@ -206,15 +185,6 @@ class FigureController extends AbstractController
         $manager->flush();
 
         return $this->redirectToRoute('all_figure');
-       /* return $this->render('figure/add-figure.html.twig', [
-            
-        ]);*/
-    }
-
-    #[Route('/img-directory', name: 'media_img_directory')]
-    public function mediaImg(): Response
-    {
-        return $this->render('');
     }
 
 }

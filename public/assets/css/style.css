@@ -1,4 +1,9 @@
-/*All figures*/
+/*Fix contenu a 1920px*/
+body{
+    max-width: 1920px;
+    margin: auto;
+}
+/*Template All figures*/
 #all-figures{
     max-width: 1920px;
     margin: auto;
@@ -21,4 +26,233 @@
 }
 #all-figures .section-two .articles .article .image img{
     width: 100%;
+}
+
+/*Template Ajout et Modification de Figure*/
+/*Form ajout et modification*/
+#figure{
+    text-align: center;
+    position: relative;
+}
+#figure .title h1{
+    font-size: 39px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 300;
+    color: #535353;
+}
+#figure .title hr{
+    width: 300px;
+    height: 2px;
+    background-color: #ff900085;
+    border: none;
+}
+#figure .description{
+    width: 500px;
+    margin: auto;
+    margin-top: 60px;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 0 38px -14px rgb(0 0 0 / 15%);
+}
+@media (max-width: 583px){
+    #figure .description{
+        width: 79%;
+    }
+}
+
+#figure .description .title div{
+    display: flex;
+    flex-direction: column;
+}
+#figure .description div label{
+    text-align: left;
+    padding: 17px 0 7px 0;
+    font-family: 'Raleway', sans-serif;
+    font-size: 15px;
+    color: #535353;
+}
+#figure .description div input{
+    height: 28px;
+    border-radius: 5px;
+    border: solid 2px #ff930045;
+    font-family: 'League Spartan', serif;
+    font-size: 15px;
+    color: #535353;
+    padding-left: 10px;
+}
+#figure .description div input::placeholder{
+    color: #b6b6b6;
+}
+#figure .description div textarea{
+    border-radius: 5px;
+    font-family: 'League Spartan', serif;
+    border: solid 2px #ff930045;
+    font-size: 15px;
+    color: #535353;
+    padding: 10px;
+}
+#figure .description div textarea::placeholder{
+    color: #b6b6b6;
+}
+#figure .description div select{
+    height: 32px;
+    border-radius: 5px;
+    border: solid 2px #ff930045;
+    font-size: 15px;
+    font-family: 'League Spartan', serif;
+    color: #535353;
+    background-color: white;
+    padding-left: 5px;
+}
+#figure .description .content div{
+    display: flex;
+    flex-direction: column;
+}
+#figure .description .groups div{
+    display: flex;
+    flex-direction: column;
+}
+#figure .description .btn-form{
+    margin-top: 30px;
+}
+#figure .description .btn-form button{
+    background: white;
+    border: solid 2px #ff930045;
+    border-radius: 5px;
+    padding: 7px;
+    font-size: 17px;
+    font-family: 'League Spartan', serif;
+    margin-right: 50px;
+    color: #535353;
+}
+#figure .description .btn-form a{
+    background: white;
+    border: solid 2px #ff930045;
+    border-radius: 5px;
+    padding: 7px;
+    font-size: 17px;
+    font-family: 'League Spartan', serif;
+    color: #535353;
+    text-decoration: none;
+}
+/*Template modification img mis en avant et modal ajout media*/
+#figure .portrait .portrait-img{
+    width: 100%;
+    object-fit: cover;
+    max-height: 400px;
+}
+#figure .media{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 50px;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+@media (max-width: 583px){
+    #figure .media{
+        width: 95%;
+        margin: auto;
+    }
+}
+#figure .media .media-img{
+    border: solid 2px #ff930045;
+    border-radius: 7px;
+    padding: 19px;
+    box-shadow: 0 0 38px -14px rgb(0 0 0 / 15%);
+    width: 500px;
+    margin-top: 50px;
+    margin-right: 15px;
+    margin-left: 15px;
+}
+#figure .media .media-video{
+    border: solid 2px #ff930045;
+    border-radius: 7px;
+    padding: 19px;
+    box-shadow: 0 0 38px -14px rgb(0 0 0 / 15%);
+    width: 500px;
+    margin-top: 50px;
+    margin-right: 15px;
+    margin-left: 15px;
+}
+#figure .media h1{
+    font-family: 'Raleway', sans-serif;
+    font-size: 30px;
+    color: #535353;
+    font-weight: 200;
+    text-transform: uppercase;
+}
+#figure .media form #media_url{
+    margin-bottom: 15px;
+}
+@media (max-width: 583px){
+    #figure .media form #media_url{
+        width: 50%;
+        margin: auto;
+        margin-bottom: 15px;
+    }
+}
+#figure .media .media-img form div{
+    margin-bottom: 15px;
+}
+#figure .media form label{
+    font-family: 'Raleway', sans-serif;
+}
+#figure .media .btn-form button{
+    background: white;
+    border: solid 2px #ff930045;
+    border-radius: 5px;
+    padding: 7px;
+    font-size: 17px;
+    font-family: 'League Spartan', serif;
+    margin-right: 28px;
+    margin-left: 7px;
+    color: #535353;
+}
+@media (max-width: 425px){
+    #figure .media .btn-form button{
+        margin-right: 28px;
+        margin-left: 7px;
+    }
+}
+#figure .media .btn-form a{
+    background: white;
+    border: solid 2px #ff930045;
+    border-radius: 5px;
+    padding: 7px;
+    font-size: 17px;
+    font-family: 'League Spartan', serif;
+    color: #535353;
+    text-decoration: none;
+}
+#figure .media .media-video form{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: auto;
+    margin-bottom: 20px;
+}
+#figure .media .media-video form div{
+    margin-bottom: 17px;
+}
+#figure .media .media-video form input{
+    margin-top: 14px;
+    width: 100%;
+    border: solid 2px #ff930045;
+    border-radius: 5px;
+}
+#figure .description h1{
+    font-size: 39px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 300;
+    color: #535353;
+}
+#figure .description .btn-form .delete{
+    background: #f5b7b7;
+    border: solid 2px #ff930045;
+    border-radius: 5px;
+    padding: 7px;
+    font-size: 17px;
+    font-family: 'League Spartan', serif;
+    color: #535353;
+    text-decoration: none;
 }
