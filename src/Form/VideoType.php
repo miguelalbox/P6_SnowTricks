@@ -14,7 +14,7 @@ class VideoType extends AbstractType
     {
         $builder
             ->add('url', TextType::class, [
-                'label' => 'Ajouter le lien vers une vidéo YouTube'
+                'label' => "Ajouter l'id vers une vidéo YouTube"
             ])
         ;
     }

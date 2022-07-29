@@ -90,8 +90,15 @@ class FigureController extends AbstractController
     #[Route('/figures/editer/{slug}', name: 'edit_figure')]
     public function edit( FiguresRepository $figureRepo, MediaRepository $mediaRepo, $slug, Request $request, EntityManagerInterface $manager): Response
     {
+
     $figure = $figureRepo->findOneBy(['slug' => $slug]);
     $medias = $mediaRepo->findOneBy(['image' => true]);
+    $mediaExist = $mediaRepo->findBy(['figure' => $figure->getId()]);
+    if ($mediaExist =! null) {
+        $ImgByFigure = $mediaRepo->findBy(['image' => true, 'figure' => $figure->getId()]);
+        $VideoByFigure = $mediaRepo->findBy(['image' => false, 'figure' => $figure->getId()]);
+    }
+
 
         $media = new Media;
         $formImages = $this->createForm(MediaType::class, $media);
@@ -173,15 +180,37 @@ class FigureController extends AbstractController
             'form' => $form->createView(),
             'figure' => $figure,
             'medias' => $medias,
+            'mediasImg' => $ImgByFigure,
+            'mediasVideo' => $VideoByFigure,
             'formImages' => $formImages->createView(),
             'formVideo' => $videoForm->createView(),
         ]);
     }
     #[Route('/figures/suprimer/{slug}', name: 'delete_figure')]
-    public function delete($slug, EntityManagerInterface $manager, FiguresRepository $figureRepo )//: Response
+    public function delete($slug, EntityManagerInterface $manager, FiguresRepository $figureRepo, MediaRepository $mediaRepo )//: Response
     {
         $figure = $figureRepo->findOneBy(['slug' => $slug]);
         $manager->remove($figure);
+        $manager->flush();
+
+        return $this->redirectToRoute('all_figure');
+    }
+    #[Route('/figures/suprimer/media/{id}', name: 'delete_media')]
+    public function deleteMedia($id, Request $request, EntityManagerInterface $manager, FiguresRepository $figureRepo, MediaRepository $mediaRepo, Media $media )//: Response
+    {
+        $images = $media->getUrl();
+        //Suppression du fichier media
+        //on recupere le repertoire
+        $nameImg = $this->getParameter('figures_img_directory') . '/' . $images;
+        //si elle existe
+        if (file_exists($nameImg)){
+            //on supprime
+            unlink($nameImg);
+        }
+        $imgByFigure = $mediaRepo->findOneBy(['id' => $id]);
+        $videoByFigure = $mediaRepo->findOneBy(['id' => $id]);
+
+        $manager->remove($imgByFigure, $videoByFigure);
         $manager->flush();
 
         return $this->redirectToRoute('all_figure');
