@@ -34,7 +34,7 @@ class Figures
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $updatedAt;
 
-    #[ORM\OneToMany(mappedBy: 'figure', targetEntity: Media::class)]
+    #[ORM\OneToMany(mappedBy: 'figure', targetEntity: Media::class, orphanRemoval: true, cascade: ['remove'])]
     private $media;
 
     public function __construct()
@@ -150,6 +150,17 @@ class Figures
         }
 
         return $this;
+    }
+    public function getMainMedia(): ?Media
+    {
+        if ($this->media->count() > 0){
+           foreach($this->media as $currentMedia){
+               if ($currentMedia->isMain()){
+                   return $currentMedia;
+               }
+           }
+        }
+        return null;
     }
 
 }

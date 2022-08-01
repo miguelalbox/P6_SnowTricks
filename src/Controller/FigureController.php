@@ -25,11 +25,17 @@ class FigureController extends AbstractController
         return md5(uniqid());
     }
     #[Route('/figures', name: 'all_figure')]
-    public function all(FiguresRepository $figuresRepo): Response
+    public function all(FiguresRepository $figuresRepo, MediaRepository $mediaRepo): Response
     {
         $figures = $figuresRepo->findAll();
+
+        $portrait = $mediaRepo->findBy([  'figure' => $figures]);
+
+
+        //dd($portrait);
         return $this->render('figure/all-figure.html.twig', [
             'figures' => $figures,
+            'portraits' => $portrait,
         ]);
     }
 
@@ -91,13 +97,14 @@ class FigureController extends AbstractController
     public function edit( FiguresRepository $figureRepo, MediaRepository $mediaRepo, $slug, Request $request, EntityManagerInterface $manager): Response
     {
 
-    $figure = $figureRepo->findOneBy(['slug' => $slug]);
-    $medias = $mediaRepo->findOneBy(['image' => true]);
-    $mediaExist = $mediaRepo->findBy(['figure' => $figure->getId()]);
-    if ($mediaExist =! null) {
-        $ImgByFigure = $mediaRepo->findBy(['image' => true, 'figure' => $figure->getId()]);
-        $VideoByFigure = $mediaRepo->findBy(['image' => false, 'figure' => $figure->getId()]);
-    }
+        $figure = $figureRepo->findOneBy(['slug' => $slug]);
+        $medias = $mediaRepo->findOneBy(['image' => true]);
+        $mediaExist = $mediaRepo->findBy(['figure' => $figure->getId()]);
+        if ($mediaExist =! null) {
+            $ImgByFigure = $mediaRepo->findBy(['image' => true, 'figure' => $figure->getId()]);
+            $VideoByFigure = $mediaRepo->findBy(['image' => false, 'figure' => $figure->getId()]);
+            $portrait = $mediaRepo->findOneBy(['main' => true, 'figure' => $figure->getId()]);
+        }
 
 
         $media = new Media;
@@ -118,7 +125,7 @@ class FigureController extends AbstractController
                 ->setUrl($figureImgName);
 
             if ($media->isMain() != false){
-                $oldMain = $mediaRepo->findOneBy(['main' => true]);
+                $oldMain = $mediaRepo->findOneBy(['main' => true, 'figure' => $figure->getId()]);
                 if ($oldMain){
                     $oldMain->setMain(false);
                 }
@@ -184,20 +191,30 @@ class FigureController extends AbstractController
             'mediasVideo' => $VideoByFigure,
             'formImages' => $formImages->createView(),
             'formVideo' => $videoForm->createView(),
+            'portrait' => $portrait,
         ]);
     }
     #[Route('/figures/suprimer/{slug}', name: 'delete_figure')]
     public function delete($slug, EntityManagerInterface $manager, FiguresRepository $figureRepo, MediaRepository $mediaRepo )//: Response
     {
         $figure = $figureRepo->findOneBy(['slug' => $slug]);
+
+        /*$mediaExist = $mediaRepo->findBy(['figure' => $figure->getId()]);
+        if ($mediaExist =! null) {
+            $ImgByFigure = $mediaRepo->findBy(['figure' => $figure->getId()]);
+            //$VideoByFigure = $mediaRepo->findBy(['image' => false, 'figure' => $figure->getId()]);
+
+        }*/
+
         $manager->remove($figure);
         $manager->flush();
 
         return $this->redirectToRoute('all_figure');
     }
     #[Route('/figures/suprimer/media/{id}', name: 'delete_media')]
-    public function deleteMedia($id, Request $request, EntityManagerInterface $manager, FiguresRepository $figureRepo, MediaRepository $mediaRepo, Media $media )//: Response
+    public function deleteMedia(Media $media, EntityManagerInterface $manager)//: Response
     {
+        $slug = $media->getFigure()->getSlug();
         $images = $media->getUrl();
         //Suppression du fichier media
         //on recupere le repertoire
@@ -207,13 +224,16 @@ class FigureController extends AbstractController
             //on supprime
             unlink($nameImg);
         }
-        $imgByFigure = $mediaRepo->findOneBy(['id' => $id]);
-        $videoByFigure = $mediaRepo->findOneBy(['id' => $id]);
 
-        $manager->remove($imgByFigure, $videoByFigure);
+
+        $manager->remove($media);
         $manager->flush();
 
-        return $this->redirectToRoute('all_figure');
+
+        //return $this->redirect($request->request->get('referer'));
+        return $this->redirectToRoute('edit_figure', [
+            'slug' => $slug
+        ]);
     }
 
 }

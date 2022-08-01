@@ -5,7 +5,11 @@
 {% block body %}
     <div id="figure" class="container">
         <div class="portrait">
+            {% if portrait is not null %}
+                <img class="portrait-img" src="/images/media/figures-img/{{ portrait.url }}" alt="">
+            {% else %}
             <img class="portrait-img" src="/images/test.jpg" alt="">
+            {% endif %}
         </div>
         <div class="media">
             <div class="media-img">

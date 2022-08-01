@@ -15,7 +15,11 @@
                     <a href="{{ path('single_figure', {'id': figure.id}) }}">
                         <div class="article">
                             <div class="image">
-                                <img src="/images/media/figures-img/1.jpeg" alt="">
+                                {% if figure.getMainMedia == null %}
+                                    <img src="/images/test.jpg" alt="">
+                                {% else %}
+                                    <img class="portrait-img" src="/images/media/figures-img/{{ figure.getMainMedia.url}}" alt="">
+                                {% endif %}
                             </div>
                             <div class="title">
                                 <p>{{ figure.title }}</p>
