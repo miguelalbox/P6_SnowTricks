@@ -6,9 +6,13 @@
     <div id="figure" class="container">
         <div class="portrait">
             {% if portrait is not null %}
-                <img class="portrait-img" src="/images/media/figures-img/{{ portrait.url }}" alt="">
+                <div class="portrait-deleted">
+                    <img class="portrait-img" src="/images/media/figures-img/{{ portrait.url }}" alt="">
+                    <a href="{{ path('delete_portrait', {'id': portrait.id}) }}"><img src="/images/media/icon/poubelle.svg" alt=""></a>
+                </div>
+
             {% else %}
-            <img class="portrait-img" src="/images/test.jpg" alt="">
+            <img class="portrait-img" src="/images/default.jpg" alt="">
             {% endif %}
         </div>
         <div class="media">
@@ -39,7 +43,7 @@
             {% for media in mediasImg %}
                 <div class="picture">
                     <img src="/images/media/figures-img/{{ media.url }}" alt="">
-                    <a href="{{ path('delete_media', {'id': media.id}) }}"><img src="/images/media/icon/poubelle.svg"" alt=""></a>
+                    <a href="{{ path('delete_media', {'id': media.id}) }}"><img src="/images/media/icon/poubelle.svg" alt=""></a>
                 </div>
 
             {% endfor %}

@@ -235,5 +235,20 @@ class FigureController extends AbstractController
             'slug' => $slug
         ]);
     }
+    #[Route('/figures/suprimer/portrait/{id}', name: 'delete_portrait')]
+    public function deletePortrait(Media $media, EntityManagerInterface $manager)//: Response
+    {
+        $media->setMain(false);
+        $slug = $media->getFigure()->getSlug();
+
+        $manager->persist($media);
+        $manager->flush();
+
+
+        //return $this->redirect($request->request->get('referer'));
+        return $this->redirectToRoute('edit_figure', [
+            'slug' => $slug
+        ]);
+    }
 
 }

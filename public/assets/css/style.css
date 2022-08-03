@@ -11,9 +11,11 @@ body{
 #all-figures .section-one .first-picture img{
     width: 100%;
     max-width: 1920px;
-    height: 500px;
     object-fit: cover;
-}
+    max-height: 300px;
+}#all-figures .section-two{
+    margin-top: 18px;
+ }
 #all-figures .section-two .articles{
     display: flex;
     flex-direction: row;
@@ -22,10 +24,62 @@ body{
 }
 #all-figures .section-two .articles .article{
     width: 320px;
-    margin: 10px 30px;
+    margin: 22px 30px;
 }
+
 #all-figures .section-two .articles .article .image img{
     width: 100%;
+}
+#all-figures .section-two .articles .article{
+    border-radius: 5px;
+    box-shadow: 0 0 38px -14px rgb(130 130 130);
+}
+#all-figures .section-two .articles .article .portrait-img{
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    height: 160px;
+    object-fit: cover;
+}
+#all-figures .section-two .articles .article .image img{
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    height: 160px;
+    object-fit: cover;
+}
+#all-figures .section-two .articles .article .title{
+    background-color: #272727;
+}
+#all-figures .section-two .articles .article a{
+    text-decoration: none;
+}
+#all-figures .section-two .articles .article .title p{
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    font-family: 'Raleway', sans-serif;
+    font-size: 18px;
+    margin-top: -6px;
+    padding-top: 15px;
+    margin-bottom: 0;
+    padding-bottom: 20px;
+}
+#all-figures .section-two .articles .article .btn-action{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    background-color: #272727;
+    font-family: 'Raleway', sans-serif;
+    font-size: 16px;
+    padding-bottom: 25px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+#all-figures .section-two .articles .article .btn-action a{
+    color: white;
+    border: solid 1px white;
+    border-radius: 3px;
+    padding: 3px;
 }
 
 /*Template Ajout et Modification de Figure*/
@@ -139,7 +193,18 @@ body{
 #figure .portrait .portrait-img{
     width: 100%;
     object-fit: cover;
-    max-height: 400px;
+    max-height: 300px;
+}
+@media(max-width: 425px){
+    #figure .portrait .portrait-img{
+        max-height: 200px;
+    }
+}
+#figure .portrait a img{
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 20px;
 }
 #figure .media{
     display: flex;

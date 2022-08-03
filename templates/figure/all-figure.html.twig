@@ -6,30 +6,37 @@
     <div id="all-figures">
         <div class="section-one">
             <div class="first-picture">
-                <img src="/images/test.jpg" alt="">
+                <img src="/images/default.jpg" alt="">
             </div>
         </div>
         <div class="section-two">
             <div class="articles">
                 {% for figure in figures  %}
-                    <a href="{{ path('single_figure', {'id': figure.id}) }}">
+
                         <div class="article">
+                            <a href="{{ path('single_figure', {'id': figure.id}) }}">
                             <div class="image">
                                 {% if figure.getMainMedia == null %}
-                                    <img src="/images/test.jpg" alt="">
+                                    <img src="/images/default-miniature.webp" alt="">
                                 {% else %}
                                     <img class="portrait-img" src="/images/media/figures-img/{{ figure.getMainMedia.url}}" alt="">
                                 {% endif %}
                             </div>
                             <div class="title">
                                 <p>{{ figure.title }}</p>
-                                <div class="btn-action">
-                                    <a href="{{ path('edit_figure', {'slug': figure.slug} ) }}">edit</a>
-                                    <a href="{{ path('delete_figure', {'slug': figure.slug}) }}">del</a>
+                            </div>
+                            </a>
+                            <div class="btn-action">
+                                <div>
+                                    <a href="{{ path('edit_figure', {'slug': figure.slug} ) }}">Modifier</a>
                                 </div>
+                               <div>
+                                   <a href="{{ path('delete_figure', {'slug': figure.slug}) }}">Suprimer</a>
+                               </div>
+
                             </div>
                         </div>
-                    </a>
+
 
                 {% endfor %}
             </div>
