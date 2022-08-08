@@ -5,9 +5,17 @@
 {% block body %}
 <div id="figure-single">
     <section class="portrait">
-        <div class="portrait-img" style='background-image: url("/images/media/figures-img/{{ portrait.url }}");'>
-            <h1>{{ figure.title }}</h1>
-        </div>
+        {% if portrait == null %}
+            <div class="portrait-img" style='background-image: url("/images/default.jpg");'>
+                <h1>{{ figure.title }}</h1>
+            </div>
+        {% else %}
+            <div class="portrait-img" style='background-image: url("/images/media/figures-img/{{ portrait.url }}");'>
+                <h1>{{ figure.title }}</h1>
+            </div>
+
+        {% endif %}
+
 
     </section>
     <section class="info-media">
