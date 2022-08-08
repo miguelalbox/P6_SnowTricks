@@ -37,6 +37,18 @@ class FigureController extends AbstractController
             'portraits' => $portrait,
         ]);
     }
+    #[Route('/figures/mes-figures', name: 'all_figure_user')]
+    public function allFiguresUser(FiguresRepository $figuresRepo, MediaRepository $mediaRepo): Response
+    {
+        $figures = $figuresRepo->findAll();
+
+        $portrait = $mediaRepo->findBy([  'figure' => $figures]);
+
+        return $this->render('figure/all-figure-user.html.twig', [
+            'figures' => $figures,
+            'portraits' => $portrait,
+        ]);
+    }
 
     #[Route('/figures/figure/{id}', name: 'single_figure')]
     public function single(Figures $figures, MediaRepository $mediaRepo, Groups $groups): Response

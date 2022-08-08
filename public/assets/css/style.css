@@ -32,6 +32,29 @@ body{
     margin-top: 4px;
     border-radius: 7px;
 }
+.header-resp{
+    display: none;
+}
+@media(max-width: 593px){
+    .header{
+        display: none;
+    }
+    .header-resp{
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: white;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-around;
+        height: 40px;
+
+    }
+    .header-resp div{
+        align-self: center;
+    }
+}
 /*Footer*/
 footer{
     font-family: 'Raleway', sans-serif;
@@ -66,6 +89,12 @@ footer p{
 #all-figures .section-two .articles .article{
     width: 320px;
     margin: 22px 30px;
+}
+#all-figures .section-two .articles .article .add{
+    margin-left: 31px;
+    margin-top: 4px;
+    width: 78%;
+    height: auto;
 }
 
 #all-figures .section-two .articles .article .image img{
