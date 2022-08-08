@@ -3,6 +3,47 @@ body{
     max-width: 1920px;
     margin: auto;
 }
+/*Header*/
+.header{
+    background-color: #494949;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: space-between;
+    padding: 0 15px;
+}
+.header .menu{
+    align-self: center;
+}
+.header .menu a{
+    color: white;
+    text-decoration: none;
+    font-family: 'Raleway', sans-serif;
+    margin: 8px;
+    border-top: solid 1px gray;
+    border-bottom: solid 1px gray;
+    padding: 2px 0;
+}
+.header .logo img{
+    width: 100px;
+    height: 43px;
+    object-fit: cover;
+    margin-top: 4px;
+    border-radius: 7px;
+}
+/*Footer*/
+footer{
+    font-family: 'Raleway', sans-serif;
+    background-color: #494949;
+    color: white;
+    margin-top: 54px;
+}
+footer p{
+    padding: 10px;
+    margin: 0;
+}
+
 /*Template All figures*/
 #all-figures{
     max-width: 1920px;
