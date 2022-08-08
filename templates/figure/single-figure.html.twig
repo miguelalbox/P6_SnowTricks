@@ -3,18 +3,78 @@
 {% block title %}Hello FigureController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div id="figure-single">
+    <section class="portrait">
+        <div class="portrait-img" style='background-image: url("/images/media/figures-img/{{ portrait.url }}");'>
+            <h1>{{ figure.title }}</h1>
+        </div>
 
-<div class="example-wrapper">
-    <h1>Single figure! ✅</h1>
+    </section>
+    <section class="info-media">
+        <div class="media-container">
+                <div class="media-img">
+                    {% for media in mediasImg %}
+                    <img src="/images/media/figures-img/{{ media.url }}" alt="">
+                    {% endfor %}
+                </div>
+            <div class="media-video">
+                {% for media in mediasVideo %}
+                <iframe width="317" height="200" src="https://www.youtube.com/embed/{{ media.url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                {% endfor %}
+                </div>
+        </div>
+        <div class="figure-content">
+            <div class="content">
+                <p>{{ figure.description }}</p>
+            </div>
+            <div class="figure-atribute">
+                <div class="atribute">
+                    <p>{{ group }}</p>
+                    <p>Creé le {{ figure.createdAt |format_datetime('full', 'none', locale='fr') }}</p>
+                    {% if figure.updatedAt is not null  %}
+                        <p>Modifie le {{ figure.updatedAt |format_datetime('full', 'none', locale='fr') }}</p>
+                    {% endif %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/Users/miguelsevilla/server/P6_SnowTricks/src/Controller/FigureController.php'|file_link(0) }}">src/Controller/FigureController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/Users/miguelsevilla/server/P6_SnowTricks/templates/figure/index.html.twig'|file_link(0) }}">templates/figure/index.html.twig</a></code></li>
-    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="commentaires">
+        <div class="comment-form">
+            <hr>
+            Ajouter le form de commentaires
+            <hr>
+        </div>
+        <div class="commentaires-all">
+            <div class="commentaire">
+                <div class="author-img">
+                    <img src="/images/default.jpg" alt="">
+                </div>
+                <div class="commentaire-text">
+                    <p>Aficher le commentaire</p>
+                </div>
+            </div>
+            <div class="commentaire">
+                <div class="author-img">
+                    <img src="/images/default.jpg" alt="">
+                </div>
+                <div class="commentaire-text">
+                    <p>Aficher le commentaire</p>
+                </div>
+            </div>
+            <div class="commentaire">
+                <div class="author-img">
+                    <img src="/images/default.jpg" alt="">
+                </div>
+                <div class="commentaire-text">
+                    <p>Aficher le commentaire</p>
+                </div>
+            </div>
+            <div class="commentaires-paginator">
+                <button>Faire la pagination</button>
+            </div>
+
+        </div>
+    </section>
 </div>
 {% endblock %}

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Figures;
+use App\Entity\Groups;
 use App\Entity\Media;
 use App\Form\FigureType;
 use App\Form\MediaType;
@@ -31,8 +32,6 @@ class FigureController extends AbstractController
 
         $portrait = $mediaRepo->findBy([  'figure' => $figures]);
 
-
-        //dd($portrait);
         return $this->render('figure/all-figure.html.twig', [
             'figures' => $figures,
             'portraits' => $portrait,
@@ -40,10 +39,25 @@ class FigureController extends AbstractController
     }
 
     #[Route('/figures/figure/{id}', name: 'single_figure')]
-    public function single(): Response
+    public function single(Figures $figures, MediaRepository $mediaRepo, Groups $groups): Response
     {
+        $figure = $figures;
+        $group = $groups;
+
+        $mediaExist = $mediaRepo->findBy(['figure' => $figure->getId()]);
+        if ($mediaExist =! null) {
+            $ImgByFigure = $mediaRepo->findBy(['image' => true, 'figure' => $figure->getId()]);
+            $VideoByFigure = $mediaRepo->findBy(['image' => false, 'figure' => $figure->getId()]);
+            $portrait = $mediaRepo->findOneBy(['main' => true, 'figure' => $figure->getId()]);
+        }
+        //dd($group->getFigureGroup());
+
         return $this->render('figure/single-figure.html.twig', [
-            
+            'figure' => $figure,
+            'mediasImg' => $ImgByFigure,
+            'mediasVideo' => $VideoByFigure,
+            'portrait' => $portrait,
+            'group' => $group->getFigureGroup(),
         ]);
     }
 
