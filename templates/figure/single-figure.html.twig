@@ -19,7 +19,10 @@
 
     </section>
     <section class="info-media">
-        <div class="media-container">
+        <div class="media-btn">
+            <button id="media-hide-btn" >Medias</button>
+        </div>
+        <div id="media-hide" class="media-container hidden">
                 <div class="media-img">
                     {% for media in mediasImg %}
                     <img src="/images/media/figures-img/{{ media.url }}" alt="">
@@ -85,4 +88,14 @@
         </div>
     </section>
 </div>
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $(document).click(function(){
+            $("#media-hide-btn").click(function(){
+                $("#media-hide").toggleClass("hidden");
+            });
+        });
+    </script>
 {% endblock %}

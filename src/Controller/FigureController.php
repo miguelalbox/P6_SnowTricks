@@ -25,7 +25,7 @@ class FigureController extends AbstractController
     {
         return md5(uniqid());
     }
-    #[Route('/figures', name: 'all_figure')]
+    #[Route('/', name: 'all_figure')]
     public function all(FiguresRepository $figuresRepo, MediaRepository $mediaRepo): Response
     {
         $figures = $figuresRepo->findAll();

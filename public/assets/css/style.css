@@ -35,6 +35,25 @@ body{
 .header-resp{
     display: none;
 }
+@media(max-width: 639px){
+    .hidden{
+        display: none;
+    }
+    #figure-single .info-media .media-btn{
+        display: block !important;
+        text-align: center;
+        margin-top: 34px;
+        margin-bottom: 20px;
+    }
+    #figure-single .info-media .media-btn button{
+        background-color: white;
+        border: Solid 1px gray;
+        border-radius: 5px;
+        padding: 7px 20px;
+        font-family: 'Raleway', sans-serif;
+        font-size: 15px;
+    }
+}
 @media(max-width: 593px){
     .header{
         display: none;
@@ -177,6 +196,26 @@ footer p{
     padding: 30px;
     border-radius: 16px;
     box-shadow: 0 0 38px -14px rgb(0 0 0 / 15%);
+}
+#figure .media-btn{
+    display: none;
+}
+@media(max-width: 639px){
+
+    #figure .media-btn{
+        display: block !important;
+        text-align: center;
+        margin-top: 34px;
+        margin-bottom: 20px;
+    }
+    #figure .media-btn button{
+        background-color: white;
+        border: Solid 1px gray;
+        border-radius: 5px;
+        padding: 7px 20px;
+        font-family: 'Raleway', sans-serif;
+        font-size: 15px;
+    }
 }
 @media (max-width: 583px){
     #figure .description{
@@ -479,6 +518,9 @@ footer p{
 #figure-single .info-media{
     margin-top: 20px;
 }
+#figure-single .info-media .media-btn{
+    display: none;
+}
 #figure-single .info-media .media-img{
     display: flex;
     flex-direction: row;
@@ -517,6 +559,7 @@ footer p{
     #figure-single .info-media .content p{
         margin: 50px 20px 20px 20px;
     }
+
 }
 #figure-single .info-media .atribute{
     display: flex;
