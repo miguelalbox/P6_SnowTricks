@@ -68,10 +68,14 @@ body{
         flex-wrap: nowrap;
         justify-content: space-around;
         height: 40px;
-
+        z-index: 1;
+        box-shadow: 0 0 30px 0px rgb(0 0 0 / 15%);
     }
     .header-resp div{
         align-self: center;
+    }
+    .header-resp a{
+        color: #ff9300;
     }
 }
 /*Footer*/
@@ -605,4 +609,26 @@ footer p{
 }
 #figure-single .commentaires .commentaires-all .commentaires-paginator{
     text-align: center;
+}
+
+/*Paginator*/
+.pagination{
+    text-align: center;
+    font-family: 'League Spartan', serif;
+    margin-top: 34px;
+}
+.pagination span a{
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #272727;
+    border: solid 1px #272727;
+    border-radius: 5px;
+    padding: 6px 11px 3px 11px;
+}
+.pagination .current{
+    color: #ff9300;
+    background-color: #272727;
+    border: solid 1px #272727;
+    border-radius: 5px;
+    padding: 6px 11px 3px 11px;
 }

@@ -51,7 +51,7 @@ class FigureController extends AbstractController
         $figuresAll = $paginator->paginate(
             $figures, // Requête contenant les données à paginer (ici nos articles)
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
-            2 // Nombre de résultats par page
+            2// Nombre de résultats par page
         );
 
         $portrait = $mediaRepo->findBy([  'figure' => $figures]);
