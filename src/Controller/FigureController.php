@@ -12,6 +12,7 @@ use App\Repository\FiguresRepository;
 use App\Repository\GroupsRepository;
 use App\Repository\MediaRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,26 +27,37 @@ class FigureController extends AbstractController
         return md5(uniqid());
     }
     #[Route('/', name: 'all_figure')]
-    public function all(FiguresRepository $figuresRepo, MediaRepository $mediaRepo): Response
+    public function all(FiguresRepository $figuresRepo, MediaRepository $mediaRepo, PaginatorInterface $paginator, Request $request): Response
     {
         $figures = $figuresRepo->findAll();
+
+        $figuresAll = $paginator->paginate(
+            $figures, // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            2 // Nombre de résultats par page
+        );
 
         $portrait = $mediaRepo->findBy([  'figure' => $figures]);
 
         return $this->render('figure/all-figure.html.twig', [
-            'figures' => $figures,
+            'figures' => $figuresAll,
             'portraits' => $portrait,
         ]);
     }
     #[Route('/figures/mes-figures', name: 'all_figure_user')]
-    public function allFiguresUser(FiguresRepository $figuresRepo, MediaRepository $mediaRepo): Response
+    public function allFiguresUser(FiguresRepository $figuresRepo, MediaRepository $mediaRepo, PaginatorInterface $paginator, Request $request): Response
     {
         $figures = $figuresRepo->findAll();
+        $figuresAll = $paginator->paginate(
+            $figures, // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            2 // Nombre de résultats par page
+        );
 
         $portrait = $mediaRepo->findBy([  'figure' => $figures]);
 
         return $this->render('figure/all-figure-user.html.twig', [
-            'figures' => $figures,
+            'figures' => $figuresAll,
             'portraits' => $portrait,
         ]);
     }
