@@ -95,12 +95,36 @@ footer p{
     max-width: 1920px;
     margin: auto;
 }
+#all-figures .section-one .first-picture .title-home{
+    position: absolute;
+    left: 5%;
+    top: 45%;
+    color: #323232;
+    background-color: #ffffffab;
+    border-radius: 5px;
+    padding: 11px;
+    font-size: 28px;
+    font-family: 'Raleway', sans-serif;
+}
+@media(max-width: 544px){
+    #all-figures .section-one .first-picture .title-home{
+        top: 39%;
+        font-size: 16px;
+        background-color: #ffffffd9;
+    }
+}
 #all-figures .section-one .first-picture img{
     width: 100%;
     max-width: 1920px;
     object-fit: cover;
-    max-height: 300px;
-}#all-figures .section-two{
+    height: 95vh;
+}
+@media(max-width: 544px){
+    #all-figures .section-one .first-picture img{
+        object-position: 67%;
+    }
+}
+#all-figures .section-two{
     margin-top: 18px;
  }
 #all-figures .section-two .articles{
