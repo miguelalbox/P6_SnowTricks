@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+    <div id="all-figures">
+        <div class="section-one">
+            <div class="first-picture">
+                <p class="title-home">Bienvenue sur le site de Snow Tricks</p>
+                <img src="/images/home.jpg" alt="">
+            </div>
+        </div>
+        <div class="section-two">
+            <div class="articles">
+                <a href="{{ path('add_figure') }}" class="article"><img class="add" src="/images/plus.png" alt="" ></a>
+                {% for figure in figures  %}
+
+                        <div class="article">
+                            <a href="{{ path('single_figure', {'id': figure.id}) }}">
+                            <div class="image">
+                                {% if figure.getMainMedia == null %}
+                                    <img src="/images/default-miniature.webp" alt="">
+                                {% else %}
+                                    <img class="portrait-img" src="/images/media/figures-img/{{ figure.getMainMedia.url}}" alt="">
+                                {% endif %}
+                            </div>
+                            <div class="title">
+                                <p>{{ figure.title }}</p>
+                            </div>
+                            </a>
+                            <div class="btn-action">
+                                <div>
+                                    <a href="{{ path('edit_figure', {'slug': figure.slug} ) }}">Modifier</a>
+                                </div>
+                               <div>
+                                   <a href="{{ path('delete_figure', {'slug': figure.slug}) }}">Suprimer</a>
+                               </div>
+
+                            </div>
+                        </div>
+
+
+                {% endfor %}
+            </div>
+            {{ knp_pagination_render(figures) }}
+        </div>
+    </div>
+
+
+
+
+{% endblock %}

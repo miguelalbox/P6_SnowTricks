@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Figure{% endblock %}
+
+{% block body %}
+    <div id="figure" class="container">
+        <div class="portrait">
+            {% if portrait is not null %}
+                <div class="portrait-deleted">
+                    <img class="portrait-img" src="/images/media/figures-img/{{ portrait.url }}" alt="">
+                    <a href="{{ path('delete_portrait', {'id': portrait.id}) }}"><img src="/images/media/icon/poubelle.svg" alt=""></a>
+                </div>
+
+            {% else %}
+            <img class="portrait-img" src="/images/default.jpg" alt="">
+            {% endif %}
+        </div>
+        <div class="media">
+            <div class="media-img">
+                <h1>Ajouter une Image</h1>
+                {{ form_start(formImages) }}
+                {{ form_widget(formImages.url) }}
+                {{ form_row(formImages.main) }}
+
+                <div class="btn-form">
+                    <button type="submit" class="btn-send">Envoyer</button>
+                    <a class="btn-reject" href="{{ path('all_figure') }}">Annuler</a>
+                </div>
+                {{ form_end(formImages) }}
+            </div>
+            <div class="media-video">
+                <h1>Ajouter une vidéo</h1>
+                {{ form_start(formVideo) }}
+                {{ form_row(formVideo.url) }}
+                <div class="btn-form">
+                    <button type="submit" class="btn-send">Envoyer</button>
+                    <a class="btn-reject" href="{{ path('all_figure') }}">Annuler</a>
+                </div>
+                {{ form_end(formVideo) }}
+            </div>
+        </div>
+        <div class="media-btn">
+            <button id="media-hide-btn" >Medias</button>
+        </div>
+        <div id="media-hide" class="media-container hidden">
+            <div class="media-pictures">
+                {% for media in mediasImg %}
+                    <div class="picture">
+                        <img src="/images/media/figures-img/{{ media.url }}" alt="">
+                        <a href="{{ path('delete_media', {'id': media.id}) }}"><img src="/images/media/icon/poubelle.svg" alt=""></a>
+                    </div>
+
+                {% endfor %}
+            </div>
+            <div class="media-videos">
+                {% for media in mediasVideo %}
+                <div class="video">
+                    <iframe width="317" height="200" src="https://www.youtube.com/embed/{{ media.url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <a href="{{ path('delete_media', {'id': media.id}) }}"><img src="/images/media/icon/poubelle.svg" alt=""></a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="description">
+            <h1>Modifier la figure {{ figure.title }}</h1>
+            {{ form_start(form) }}
+            <div class="title">
+                {{ form_row(form.title) }}
+            </div>
+            <div class="content">
+                {{ form_row(form.description) }}
+            </div>
+            <div class="groups">
+                {{ form_row(form.groups) }}
+            </div>
+            <div class="btn-form">
+                <button type="submit" class="btn-send">Envoyer</button>
+                <a class="btn-reject" href="{{ path('all_figure') }}">Annuler</a>
+            </div>
+            <div class="btn-form">
+                <a href="{{ path('delete_figure', {'slug': figure.slug}) }}" class="delete">Supprimer la figure</a>
+            </div>
+            {{ form_end(form) }}
+
+        </div>
+
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+            $("#media-hide-btn").click(function(){
+                $("#media-hide").toggleClass("hidden");
+            });
+    </script>
+{% endblock %}

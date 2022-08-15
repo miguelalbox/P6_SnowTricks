@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ figure.title }}{% endblock %}
+
+{% block body %}
+<div id="figure-single">
+    <section class="portrait">
+        {% if portrait == null %}
+            <div class="portrait-img" style='background-image: url("/images/default.jpg");'>
+                <h1>{{ figure.title }}</h1>
+            </div>
+        {% else %}
+            <div class="portrait-img" style='background-image: url("/images/media/figures-img/{{ portrait.url }}");'>
+                <h1>{{ figure.title }}</h1>
+            </div>
+
+        {% endif %}
+
+
+    </section>
+    <section class="info-media">
+        <div class="media-btn">
+            <button id="media-hide-btn" >Medias</button>
+        </div>
+        <div id="media-hide" class="media-container hidden">
+                <div class="media-img">
+                    {% for media in mediasImg %}
+                    <img src="/images/media/figures-img/{{ media.url }}" alt="">
+                    {% endfor %}
+                </div>
+            <div class="media-video">
+                {% for media in mediasVideo %}
+                <iframe width="317" height="200" src="https://www.youtube.com/embed/{{ media.url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                {% endfor %}
+                </div>
+        </div>
+        <div class="figure-content">
+            <div class="content">
+                <p>{{ figure.description }}</p>
+            </div>
+            <div class="figure-atribute">
+                <div class="atribute">
+                    <p>{{ group }}</p>
+                    <p>Creé le {{ figure.createdAt |format_datetime('full', 'none', locale='fr') }}</p>
+                    {% if figure.updatedAt is not null  %}
+                        <p>Modifie le {{ figure.updatedAt |format_datetime('full', 'none', locale='fr') }}</p>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="commentaires">
+        <div class="comment-form">
+            <hr>
+            Ajouter le form de commentaires
+            <hr>
+        </div>
+        <div class="commentaires-all">
+            <div class="commentaire">
+                <div class="author-img">
+                    <img src="/images/default.jpg" alt="">
+                </div>
+                <div class="commentaire-text">
+                    <p>Aficher le commentaire</p>
+                </div>
+            </div>
+            <div class="commentaire">
+                <div class="author-img">
+                    <img src="/images/default.jpg" alt="">
+                </div>
+                <div class="commentaire-text">
+                    <p>Aficher le commentaire</p>
+                </div>
+            </div>
+            <div class="commentaire">
+                <div class="author-img">
+                    <img src="/images/default.jpg" alt="">
+                </div>
+                <div class="commentaire-text">
+                    <p>Aficher le commentaire</p>
+                </div>
+            </div>
+            <div class="commentaires-paginator">
+                <button>Faire la pagination</button>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+            $("#media-hide-btn").click(function(){
+                $("#media-hide").toggleClass("hidden");
+            });
+
+    </script>
+{% endblock %}

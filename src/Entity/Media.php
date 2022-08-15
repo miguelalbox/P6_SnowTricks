@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MediaRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
@@ -22,8 +24,9 @@ class Media
     #[ORM\Column(type: 'boolean')]
     private $image;
 
-    #[ORM\ManyToOne(targetEntity: Figures::class, inversedBy: 'images')]
-    private $figures;
+    #[ORM\ManyToOne(targetEntity: Figures::class, inversedBy: 'media')]
+    private $figure;
+
 
     public function getId(): ?int
     {
@@ -66,14 +69,14 @@ class Media
         return $this;
     }
 
-    public function getFigures(): ?Figures
+    public function getFigure(): ?Figures
     {
-        return $this->figures;
+        return $this->figure;
     }
 
-    public function setFigures(?Figures $figures): self
+    public function setFigure(?Figures $figure): self
     {
-        $this->figures = $figures;
+        $this->figure = $figure;
 
         return $this;
     }
