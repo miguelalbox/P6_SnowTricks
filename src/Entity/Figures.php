@@ -28,23 +28,22 @@ class Figures
     #[ORM\JoinColumn(nullable: false)]
     private $groups;
 
-    #[ORM\OneToMany(mappedBy: 'figures', targetEntity: Media::class)]
-    private $images;
-
-    #[ORM\OneToMany(mappedBy: 'figures', targetEntity: Media::class)]
-    private $videos;
-
     #[ORM\Column(type: 'datetime_immutable')]
     private $createdAt;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $updatedAt;
 
+    #[ORM\OneToMany(mappedBy: 'figure', targetEntity: Media::class, orphanRemoval: true, cascade: ['remove'])]
+    private $media;
+
     public function __construct()
     {
-        $this->images = new ArrayCollection();
-        $this->videos = new ArrayCollection();
+        $this->media = new ArrayCollection();
     }
+
+
+
 
     public function getId(): ?int
     {
@@ -99,66 +98,6 @@ class Figures
         return $this;
     }
 
-    /**
-     * @return Collection<int, Media>
-     */
-    public function getImages(): Collection
-    {
-        return $this->images;
-    }
-
-    public function addImage(Media $image): self
-    {
-        if (!$this->images->contains($image)) {
-            $this->images[] = $image;
-            $image->setFigures($this);
-        }
-
-        return $this;
-    }
-
-    public function removeImage(Media $image): self
-    {
-        if ($this->images->removeElement($image)) {
-            // set the owning side to null (unless already changed)
-            if ($image->getFigures() === $this) {
-                $image->setFigures(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Media>
-     */
-    public function getVideos(): Collection
-    {
-        return $this->videos;
-    }
-
-    public function addVideo(Media $video): self
-    {
-        if (!$this->videos->contains($video)) {
-            $this->videos[] = $video;
-            $video->setFigures($this);
-        }
-
-        return $this;
-    }
-
-    public function removeVideo(Media $video): self
-    {
-        if ($this->videos->removeElement($video)) {
-            // set the owning side to null (unless already changed)
-            if ($video->getFigures() === $this) {
-                $video->setFigures(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -182,4 +121,46 @@ class Figures
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Media>
+     */
+    public function getMedia(): Collection
+    {
+        return $this->media;
+    }
+
+    public function addMedium(Media $medium): self
+    {
+        if (!$this->media->contains($medium)) {
+            $this->media[] = $medium;
+            $medium->setFigure($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMedium(Media $medium): self
+    {
+        if ($this->media->removeElement($medium)) {
+            // set the owning side to null (unless already changed)
+            if ($medium->getFigure() === $this) {
+                $medium->setFigure(null);
+            }
+        }
+
+        return $this;
+    }
+    public function getMainMedia(): ?Media
+    {
+        if ($this->media->count() > 0){
+           foreach($this->media as $currentMedia){
+               if ($currentMedia->isMain()){
+                   return $currentMedia;
+               }
+           }
+        }
+        return null;
+    }
+
 }

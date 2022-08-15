@@ -1,0 +1,658 @@
+/*Fix contenu a 1920px*/
+body{
+    max-width: 1920px;
+    margin: auto;
+}
+/*Header*/
+.header{
+    background-color: #494949;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: space-between;
+    padding: 0 15px;
+}
+.header .menu{
+    align-self: center;
+}
+.header .menu a{
+    color: white;
+    text-decoration: none;
+    font-family: 'Raleway', sans-serif;
+    margin: 8px;
+    border-top: solid 1px gray;
+    border-bottom: solid 1px gray;
+    padding: 2px 0;
+}
+.header .logo img{
+    width: 100px;
+    height: 43px;
+    object-fit: cover;
+    margin-top: 4px;
+    border-radius: 7px;
+}
+.header-resp{
+    display: none;
+}
+@media(max-width: 639px){
+    .hidden{
+        display: none;
+    }
+    #figure-single .info-media .media-btn{
+        display: block !important;
+        text-align: center;
+        margin-top: 34px;
+        margin-bottom: 20px;
+    }
+    #figure-single .info-media .media-btn button{
+        background-color: white;
+        border: Solid 1px gray;
+        border-radius: 5px;
+        padding: 7px 20px;
+        font-family: 'Raleway', sans-serif;
+        font-size: 15px;
+    }
+}
+@media(max-width: 593px){
+    .header{
+        display: none;
+    }
+    .header-resp{
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: white;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-around;
+        height: 40px;
+        z-index: 1;
+        box-shadow: 0 0 30px 0px rgb(0 0 0 / 15%);
+    }
+    .header-resp div{
+        align-self: center;
+    }
+    .header-resp a{
+        color: #ff9300;
+    }
+}
+/*Footer*/
+footer{
+    font-family: 'Raleway', sans-serif;
+    background-color: #494949;
+    color: white;
+    margin-top: 54px;
+}
+footer p{
+    padding: 10px;
+    margin: 0;
+}
+
+/*Template All figures*/
+#all-figures{
+    max-width: 1920px;
+    margin: auto;
+}
+#all-figures .section-one .first-picture .title-home{
+    position: absolute;
+    left: 5%;
+    top: 45%;
+    color: #323232;
+    background-color: #ffffffab;
+    border-radius: 5px;
+    padding: 11px;
+    font-size: 28px;
+    font-family: 'Raleway', sans-serif;
+}
+@media(max-width: 544px){
+    #all-figures .section-one .first-picture .title-home{
+        top: 39%;
+        font-size: 16px;
+        background-color: #ffffffd9;
+    }
+}
+#all-figures .section-one .first-picture img{
+    width: 100%;
+    max-width: 1920px;
+    object-fit: cover;
+    height: 95vh;
+}
+@media(max-width: 544px){
+    #all-figures .section-one .first-picture img{
+        object-position: 67%;
+    }
+}
+#all-figures .section-two{
+    margin-top: 18px;
+ }
+#all-figures .section-two .articles{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#all-figures .section-two .articles .article{
+    width: 320px;
+    margin: 22px 30px;
+}
+#all-figures .section-two .articles .article .add{
+    margin-left: 31px;
+    margin-top: 4px;
+    width: 78%;
+    height: auto;
+}
+
+#all-figures .section-two .articles .article .image img{
+    width: 100%;
+}
+#all-figures .section-two .articles .article{
+    border-radius: 5px;
+    box-shadow: 0 0 38px -14px rgb(130 130 130);
+}
+#all-figures .section-two .articles .article .portrait-img{
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    height: 160px;
+    object-fit: cover;
+}
+#all-figures .section-two .articles .article .image img{
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    height: 160px;
+    object-fit: cover;
+}
+#all-figures .section-two .articles .article .title{
+    background-color: #272727;
+}
+#all-figures .section-two .articles .article a{
+    text-decoration: none;
+}
+#all-figures .section-two .articles .article .title p{
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    font-family: 'Raleway', sans-serif;
+    font-size: 18px;
+    margin-top: -6px;
+    padding-top: 15px;
+    margin-bottom: 0;
+    padding-bottom: 20px;
+}
+#all-figures .section-two .articles .article .btn-action{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    background-color: #272727;
+    font-family: 'Raleway', sans-serif;
+    font-size: 16px;
+    padding-bottom: 25px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+#all-figures .section-two .articles .article .btn-action a{
+    color: white;
+    border: solid 1px white;
+    border-radius: 3px;
+    padding: 3px;
+}
+
+/*Template Ajout et Modification de Figure*/
+/*Form ajout et modification*/
+#figure{
+    text-align: center;
+    position: relative;
+}
+#figure .title h1{
+    font-size: 39px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 300;
+    color: #535353;
+}
+#figure .title hr{
+    width: 300px;
+    height: 2px;
+    background-color: #ff900085;
+    border: none;
+}
+#figure .description{
+    width: 500px;
+    margin: auto;
+    margin-top: 60px;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 0 38px -14px rgb(0 0 0 / 15%);
+}
+#figure .media-btn{
+    display: none;
+}
+@media(max-width: 639px){
+
+    #figure .media-btn{
+        display: block !important;
+        text-align: center;
+        margin-top: 34px;
+        margin-bottom: 20px;
+    }
+    #figure .media-btn button{
+        background-color: white;
+        border: Solid 1px gray;
+        border-radius: 5px;
+        padding: 7px 20px;
+        font-family: 'Raleway', sans-serif;
+        font-size: 15px;
+    }
+}
+@media (max-width: 583px){
+    #figure .description{
+        width: 79%;
+    }
+}
+
+#figure .description .title div{
+    display: flex;
+    flex-direction: column;
+}
+#figure .description div label{
+    text-align: left;
+    padding: 17px 0 7px 0;
+    font-family: 'Raleway', sans-serif;
+    font-size: 15px;
+    color: #535353;
+}
+#figure .description div input{
+    height: 28px;
+    border-radius: 5px;
+    border: solid 2px #ff930045;
+    font-family: 'League Spartan', serif;
+    font-size: 15px;
+    color: #535353;
+    padding-left: 10px;
+}
+#figure .description div input::placeholder{
+    color: #b6b6b6;
+}
+#figure .description div textarea{
+    border-radius: 5px;
+    font-family: 'League Spartan', serif;
+    border: solid 2px #ff930045;
+    font-size: 15px;
+    color: #535353;
+    padding: 10px;
+}
+#figure .description div textarea::placeholder{
+    color: #b6b6b6;
+}
+#figure .description div select{
+    height: 32px;
+    border-radius: 5px;
+    border: solid 2px #ff930045;
+    font-size: 15px;
+    font-family: 'League Spartan', serif;
+    color: #535353;
+    background-color: white;
+    padding-left: 5px;
+}
+#figure .description .content div{
+    display: flex;
+    flex-direction: column;
+}
+#figure .description .groups div{
+    display: flex;
+    flex-direction: column;
+}
+#figure .description .btn-form{
+    margin-top: 30px;
+}
+#figure .description .btn-form button{
+    background: white;
+    border: solid 2px #ff930045;
+    border-radius: 5px;
+    padding: 7px;
+    font-size: 17px;
+    font-family: 'League Spartan', serif;
+    margin-right: 50px;
+    color: #535353;
+}
+#figure .description .btn-form a{
+    background: white;
+    border: solid 2px #ff930045;
+    border-radius: 5px;
+    padding: 7px;
+    font-size: 17px;
+    font-family: 'League Spartan', serif;
+    color: #535353;
+    text-decoration: none;
+}
+/*Template modification img mis en avant et modal ajout media*/
+#figure .portrait .portrait-img{
+    width: 100%;
+    object-fit: cover;
+    max-height: 300px;
+}
+@media(max-width: 425px){
+    #figure .portrait .portrait-img{
+        max-height: 200px;
+    }
+}
+#figure .portrait a img{
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 20px;
+}
+#figure .media{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 50px;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+@media (max-width: 583px){
+    #figure .media{
+        width: 95%;
+        margin: auto;
+    }
+}
+#figure .media .media-img{
+    border: solid 2px #ff930045;
+    border-radius: 7px;
+    padding: 19px;
+    box-shadow: 0 0 38px -14px rgb(0 0 0 / 15%);
+    width: 500px;
+    margin-top: 50px;
+    margin-right: 15px;
+    margin-left: 15px;
+}
+#figure .media .media-video{
+    border: solid 2px #ff930045;
+    border-radius: 7px;
+    padding: 19px;
+    box-shadow: 0 0 38px -14px rgb(0 0 0 / 15%);
+    width: 500px;
+    margin-top: 50px;
+    margin-right: 15px;
+    margin-left: 15px;
+}
+#figure .media h1{
+    font-family: 'Raleway', sans-serif;
+    font-size: 30px;
+    color: #535353;
+    font-weight: 200;
+    text-transform: uppercase;
+}
+#figure .media form #media_url{
+    margin-bottom: 15px;
+}
+@media (max-width: 583px){
+    #figure .media form #media_url{
+        width: 50%;
+        margin: auto;
+        margin-bottom: 15px;
+    }
+}
+#figure .media .media-img form div{
+    margin-bottom: 15px;
+}
+#figure .media form label{
+    font-family: 'Raleway', sans-serif;
+}
+#figure .media .btn-form button{
+    background: white;
+    border: solid 2px #ff930045;
+    border-radius: 5px;
+    padding: 7px;
+    font-size: 17px;
+    font-family: 'League Spartan', serif;
+    margin-right: 28px;
+    margin-left: 7px;
+    color: #535353;
+}
+@media (max-width: 425px){
+    #figure .media .btn-form button{
+        margin-right: 28px;
+        margin-left: 7px;
+    }
+}
+#figure .media .btn-form a{
+    background: white;
+    border: solid 2px #ff930045;
+    border-radius: 5px;
+    padding: 7px;
+    font-size: 17px;
+    font-family: 'League Spartan', serif;
+    color: #535353;
+    text-decoration: none;
+}
+#figure .media .media-video form{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: auto;
+    margin-bottom: 20px;
+}
+#figure .media .media-video form div{
+    margin-bottom: 17px;
+}
+#figure .media .media-video form input{
+    margin-top: 14px;
+    width: 100%;
+    border: solid 2px #ff930045;
+    border-radius: 5px;
+}
+#figure .description h1{
+    font-size: 39px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 300;
+    color: #535353;
+}
+#figure .description .btn-form .delete{
+    background: #f5b7b7;
+    border: solid 2px #ff930045;
+    border-radius: 5px;
+    padding: 7px;
+    font-size: 17px;
+    font-family: 'League Spartan', serif;
+    color: #535353;
+    text-decoration: none;
+}
+#figure .media-pictures{
+    width: 100%;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
+}
+#figure .media-pictures .picture{
+    width: 316px;
+    object-fit: cover;
+    height: 200px;
+    position: relative;
+    margin: 2px 2px;
+}
+#figure .media-videos{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#figure .media-videos .video{
+    width: 320px;
+    object-fit: cover;
+    height: 200px;
+    position: relative;
+    margin: 2px 0;
+}
+#figure .media-pictures img{
+    width: 100%;
+    object-fit: cover;
+    height: 100%;
+}
+#figure .media-pictures a{
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 15px;
+}
+#figure .media-videos a{
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 15px;
+}
+@media(max-width: 425px){
+    #figure .media-pictures .picture{
+        width: 154px;
+        height: 102px;
+    }
+    #figure .media-videos .video{
+        width: 154px;
+        height: 102px;
+        margin: 2px 2px;
+    }
+
+    #figure .media-videos iframe{
+        width: 154px;
+        height: 102px;
+
+    }
+}
+/*Template figure single*/
+#figure-single .portrait .portrait-img{
+    position: relative;
+    height: 300px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: center;
+    background-position-y: center;
+}
+#figure-single .portrait .portrait-img h1{
+    position: relative;
+    width: fit-content;
+    margin: auto;
+    top: 132px;
+    background-color: #fffffff5;
+    border: solid 1px gray;
+    border-radius: 5px;
+    padding: 7px 30px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 30px;
+
+}
+#figure-single .info-media{
+    margin-top: 20px;
+}
+#figure-single .info-media .media-btn{
+    display: none;
+}
+#figure-single .info-media .media-img{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#figure-single .info-media .media-img img{
+    width: 300px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+    box-shadow: 0 0 38px -14px rgb(0 0 0 / 37%);
+    margin: 10px;
+}
+#figure-single .info-media .media-video{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#figure-single .info-media .media-video iframe{
+    width: 300px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+    box-shadow: 0 0 38px -14px rgb(0 0 0 / 37%);
+    margin: 10px;
+}
+#figure-single .info-media .content p{
+    margin: 70px 70px 20px 70px;
+    font-family: 'League Spartan', serif;
+    font-size: 17px;
+    line-height: 26px;
+}
+@media(max-width: 634px){
+    #figure-single .info-media .content p{
+        margin: 50px 20px 20px 20px;
+    }
+
+}
+#figure-single .info-media .atribute{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#figure-single .info-media .atribute p{
+    border: solid 1px black;
+    border-radius: 5px;
+    padding: 4px 13px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 15px;
+    margin: 10px
+}
+#figure-single .commentaires .comment-form{
+    text-align: center;
+}
+#figure-single .commentaires .comment-form hr{
+    width: 50%;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+#figure-single .commentaires .commentaires-all .commentaire{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 10px 0;
+}
+#figure-single .commentaires .commentaires-all .commentaire .author-img img{
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 50px;
+}
+#figure-single .commentaires .commentaires-all .commentaire .commentaire-text{
+    border: solid 1px black;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px 15px 10px 15px;
+    font-family: 'League Spartan', serif;
+}
+#figure-single .commentaires .commentaires-all .commentaires-paginator{
+    text-align: center;
+}
+
+/*Paginator*/
+.pagination{
+    text-align: center;
+    font-family: 'League Spartan', serif;
+    margin-top: 34px;
+}
+.pagination span a{
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #272727;
+    border: solid 1px #272727;
+    border-radius: 5px;
+    padding: 6px 11px 3px 11px;
+}
+.pagination .current{
+    color: #ff9300;
+    background-color: #272727;
+    border: solid 1px #272727;
+    border-radius: 5px;
+    padding: 6px 11px 3px 11px;
+}
