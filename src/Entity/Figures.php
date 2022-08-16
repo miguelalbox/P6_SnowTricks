@@ -37,6 +37,13 @@ class Figures
     #[ORM\OneToMany(mappedBy: 'figure', targetEntity: Media::class, orphanRemoval: true, cascade: ['remove'])]
     private $media;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'figures')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $user;
+
+
+
+
     public function __construct()
     {
         $this->media = new ArrayCollection();
@@ -162,5 +169,19 @@ class Figures
         }
         return null;
     }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+
 
 }

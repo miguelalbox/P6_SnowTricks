@@ -47,6 +47,8 @@ class FigureController extends AbstractController
     #[Route('/figures/mes-figures', name: 'all_figure_user')]
     public function allFiguresUser(FiguresRepository $figuresRepo, MediaRepository $mediaRepo, PaginatorInterface $paginator, Request $request): Response
     {
+        //$user = $this->getUser();
+        //dd($user);
         $figures = $figuresRepo->findAll();
         $figuresAll = $paginator->paginate(
             $figures, // Requête contenant les données à paginer (ici nos articles)
@@ -89,7 +91,10 @@ class FigureController extends AbstractController
     public function add(Request $request, EntityManagerInterface $manager, FiguresRepository $figureRepo, GroupsRepository $groupsRepo): Response
     {
         $figure = new Figures;
-
+        //ajout d'utilisateur en session
+        $user = $this->getUser();
+        //dd($user);
+        //$figure->setUser($user);
 
         $groups = $groupsRepo->findAll();
         $groupsFigure = [];
