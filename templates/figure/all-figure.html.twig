@@ -24,19 +24,27 @@
                                     <img class="portrait-img" src="/images/media/figures-img/{{ figure.getMainMedia.url}}" alt="">
                                 {% endif %}
                             </div>
+                            {% if figure.user.id == user %}
                             <div class="title">
                                 <p>{{ figure.title }}</p>
                             </div>
                             </a>
-                            <div class="btn-action">
-                                <div>
-                                    <a href="{{ path('edit_figure', {'slug': figure.slug} ) }}">Modifier</a>
-                                </div>
-                               <div>
-                                   <a href="{{ path('delete_figure', {'slug': figure.slug}) }}">Suprimer</a>
-                               </div>
+                                <div class="btn-action">
+                                    <div>
+                                        <a href="{{ path('edit_figure', {'slug': figure.slug} ) }}">Modifier</a>
+                                    </div>
+                                    <div>
+                                        <a href="{{ path('delete_figure', {'slug': figure.slug}) }}">Suprimer</a>
+                                    </div>
 
-                            </div>
+                                </div>
+                                {% else %}
+                                    <div class="title" style="border-radius: 0px 0px 3px 3px;">
+                                        <p style="padding: 39px 0px">{{ figure.title }}</p>
+                                    </div>
+                                    </a>
+                            {% endif %}
+
                         </div>
 
 
