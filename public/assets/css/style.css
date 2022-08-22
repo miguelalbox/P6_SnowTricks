@@ -656,3 +656,100 @@ footer p{
     border-radius: 5px;
     padding: 6px 11px 3px 11px;
 }
+
+/*Login Form*/
+.login{
+    width: 364px;
+    margin: auto;
+    margin-top: 80px;
+    border-radius: 8px;
+    padding: 2px 20px 28px 20px;
+    box-shadow: 0px 0px 26px -2px #72727282;
+}
+.login h1{
+    font-family: 'League Spartan', serif;
+}
+.login form{
+    text-align: center;
+}
+.login .login-form{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+.login .login-form label{
+    text-align: center;
+    font-family: 'League Spartan', serif;
+    padding: 15px;
+    font-size: 22px;
+}
+.login .login-form input{
+    width: 310px;
+    margin: auto;
+    text-align: center;
+}
+.login button{
+    margin-top: 17px;
+    background: white;
+    border: solid 1px gray;
+    border-radius: 3px;
+    padding: 5px 20px;
+}
+@media(max-width: 425px){
+    .login{
+        width: 262px;
+    }
+    .login .login-form input{
+        width: 254px;
+    }
+}
+/*Register*/
+.register{
+    text-align: center;
+    width: 364px;
+    margin: auto;
+    margin-top: 80px;
+    border-radius: 8px;
+    padding: 2px 20px 28px 20px;
+    box-shadow: 0px 0px 26px -2px #72727282;
+}
+.register h1{
+    font-family: 'League Spartan', serif;
+}
+.register form{
+    text-align: center;
+}
+.register div{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+.register form label{
+    text-align: center;
+    font-family: 'League Spartan', serif;
+    padding: 15px;
+    font-size: 22px;
+}
+.register form input{
+    width: 310px;
+    margin: auto;
+    text-align: center;
+}
+.register button{
+    margin-top: 17px;
+    background: white;
+    border: solid 1px gray;
+    border-radius: 3px;
+    padding: 5px 20px;
+}
+.register ul li{
+    font-family: 'League Spartan', serif;
+}
+@media(max-width: 425px){
+    .register{
+        width: 262px;
+    }
+    .register form input{
+        width: 254px;
+    }
+}
