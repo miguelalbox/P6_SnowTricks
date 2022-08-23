@@ -37,6 +37,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Figures::class, orphanRemoval: true)]
     private $figures;
 
+    #[ORM\Column]
+    private ?bool $activated = null;
+
 
 
     public function __construct()
@@ -176,6 +179,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $figure->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isActivated(): ?bool
+    {
+        return $this->activated;
+    }
+
+    public function setActivated(bool $activated): self
+    {
+        $this->activated = $activated;
 
         return $this;
     }

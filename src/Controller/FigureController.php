@@ -152,127 +152,118 @@ class FigureController extends AbstractController
     {
         $figureUser = $figure->getUser();
         //TODO securite, on ne peut pas acceder si on n'est pas l'utilisateur
-        if ($this->getUser() == $figureUser) {
-
-            $figure = $figureRepo->findOneBy(['slug' => $slug]);
-            $medias = $mediaRepo->findOneBy(['image' => true]);
-            $mediaExist = $mediaRepo->findBy(['figure' => $figure->getId()]);
-            if ($mediaExist = !null) {
-                $ImgByFigure = $mediaRepo->findBy(['image' => true, 'figure' => $figure->getId()]);
-                $VideoByFigure = $mediaRepo->findBy(['image' => false, 'figure' => $figure->getId()]);
-                $portrait = $mediaRepo->findOneBy(['main' => true, 'figure' => $figure->getId()]);
-            }
-
-
-            $media = new Media;
-            $formImages = $this->createForm(MediaType::class, $media);
-            $formImages->handleRequest($request);
-            if ($formImages->isSubmitted() && $formImages->isValid()) {
-
-                $img = $request->files->get('media')['url'];
-                $figureImgName = $this->generateUniqueFileName() . '.' . $img->guessExtension();
-
-
-                $img->move(
-                    $this->getParameter('figures_img_directory'),
-                    $figureImgName
-                );
-                $media->setImage(true)
-                    ->setFigure($figure)
-                    ->setUrl($figureImgName);
-
-                if ($media->isMain() != false) {
-                    $oldMain = $mediaRepo->findOneBy(['main' => true, 'figure' => $figure->getId()]);
-                    if ($oldMain) {
-                        $oldMain->setMain(false);
-                    }
-                }
-
-                $manager->persist($media);
-                $manager->flush();
-
-                return $this->redirect($request->getUri());
-            }
-
-            $video = new Media();
-            $videoForm = $this->createForm(VideoType::class, $video);
-            $videoForm->handleRequest($request);
-
-            if ($videoForm->isSubmitted() && $videoForm->isValid()) {
-                // TODO: save video
-                $video->setImage(false)
-                    ->setFigure($figure)
-                    ->setMain(false);
-
-                $manager->persist($video);
-                $manager->flush();
-
-                return $this->redirect($request->getUri());
-            }
-
-            $form = $this->createForm(FigureType::class, $figure);
-            $form->handleRequest($request);
-
-            if ($form->isSubmitted() && $form->isValid()) {
-
-                $title = $figure->getTitle();
-                $slugger = new AsciiSlugger();
-                $slug = strtolower($slugger->slug($title, '-'));
-                $i = 0;
-
-                do {
-                    $existSlug = $figureRepo->findOneBy([
-                        'slug' => $slug
-                    ]);
-                    if ($existSlug != null) {
-                        $slug = strtolower($slugger->slug($title, '-') . '-' . $i);
-                        $i++;
-                    }
-                } while ($existSlug != null);
-                $figure->setSlug($slug);
-
-                $figure->setUpdatedAt(new \DateTime());
-                $manager->persist($figure);
-                $manager->flush();
-
-                return $this->redirectToRoute('all_figure');
-            }
-
-
-            return $this->render('figure/edit-figure.html.twig', [
-                'form' => $form->createView(),
-                'figure' => $figure,
-                'medias' => $medias,
-                'mediasImg' => $ImgByFigure,
-                'mediasVideo' => $VideoByFigure,
-                'formImages' => $formImages->createView(),
-                'formVideo' => $videoForm->createView(),
-                'portrait' => $portrait,
-            ]);
-        }
-        else{
-            //TODO addFlash pour dire que vous ne pouvez pas entrer dans une url de tricks d'autre personne
+        if ($this->getUser() != $figureUser) {
+            $this->addFlash('error', 'La figure ne vous partien pas');
             return $this->redirectToRoute('all_figure');
         }
+
+            $imgByFigure = $mediaRepo->findBy(['image' => true, 'figure' => $figure->getId()]);
+            $videoByFigure = $mediaRepo->findBy(['image' => false, 'figure' => $figure->getId()]);
+            $portrait = $mediaRepo->findOneBy(['main' => true, 'figure' => $figure->getId()]);
+
+
+        $media = new Media;
+        $formImages = $this->createForm(MediaType::class, $media);
+        $formImages->handleRequest($request);
+        if ($formImages->isSubmitted() && $formImages->isValid()) {
+
+            $img = $request->files->get('media')['url'];
+            $figureImgName = $this->generateUniqueFileName() . '.' . $img->guessExtension();
+
+
+            $img->move(
+                $this->getParameter('figures_img_directory'),
+                $figureImgName
+            );
+            $media->setImage(true)
+                ->setFigure($figure)
+                ->setUrl($figureImgName);
+
+            if ($media->isMain() != false) {
+                $oldMain = $mediaRepo->findOneBy(['main' => true, 'figure' => $figure->getId()]);
+                if ($oldMain) {
+                    $oldMain->setMain(false);
+                }
+            }
+
+            $manager->persist($media);
+            $manager->flush();
+
+            return $this->redirect($request->getUri());
+        }
+
+        $video = new Media();
+        $videoForm = $this->createForm(VideoType::class, $video);
+        $videoForm->handleRequest($request);
+
+        if ($videoForm->isSubmitted() && $videoForm->isValid()) {
+            // TODO: save video
+            $video->setImage(false)
+                ->setFigure($figure)
+                ->setMain(false);
+
+            $manager->persist($video);
+            $manager->flush();
+
+            return $this->redirect($request->getUri());
+        }
+
+        $form = $this->createForm(FigureType::class, $figure);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $title = $figure->getTitle();
+            $slugger = new AsciiSlugger();
+            $slug = strtolower($slugger->slug($title, '-'));
+            $i = 0;
+
+            do {
+                $existSlug = $figureRepo->findOneBy([
+                    'slug' => $slug
+                ]);
+                if ($existSlug != null) {
+                    $slug = strtolower($slugger->slug($title, '-') . '-' . $i);
+                    $i++;
+                }
+            } while ($existSlug != null);
+            $figure->setSlug($slug);
+
+            $figure->setUpdatedAt(new \DateTime());
+            $manager->persist($figure);
+            $manager->flush();
+
+            return $this->redirectToRoute('all_figure');
+        }
+
+
+        return $this->render('figure/edit-figure.html.twig', [
+            'form' => $form->createView(),
+            'figure' => $figure,
+            'mediasImg' => $imgByFigure,
+            'mediasVideo' => $videoByFigure,
+            'formImages' => $formImages->createView(),
+            'formVideo' => $videoForm->createView(),
+            'portrait' => $portrait,
+        ]);
     }
     #[Route('/figures/suprimer/{slug}', name: 'delete_figure')]
     public function delete($slug, EntityManagerInterface $manager, FiguresRepository $figureRepo, Figures $figure, MediaRepository $mediaRepo )//: Response
     {
         $figureUser = $figure->getUser();
         //TODO securite, on ne peut pas acceder si on n'est pas l'utilisateur
-        if ($this->getUser() == $figureUser) {
+        if ($this->getUser() != $figureUser) {
+            $this->addFlash('error', 'La figure ne vous partien pas');
+            return $this->redirectToRoute('all_figure');
+        }
             $figure = $figureRepo->findOneBy(['slug' => $slug]);
-            //TODO suprimer image en cascade
+            //TODO suprimer image en cascade je recupere les images de la figure puis pour chaque une des entite je suprime le fichier avec un boucle for avec unlink
 
             $manager->remove($figure);
             $manager->flush();
 
             return $this->redirectToRoute('all_figure');
-        }
-        else{
-            //TODO addFlash pour dire que vous ne pouvez pas entrer dans une url de tricks d'autre personne
-            return $this->redirectToRoute('all_figure');
-        }
+
     }
     #[Route('/figures/suprimer/media/{id}', name: 'delete_media')]
     public function deleteMedia(Media $media, EntityManagerInterface $manager)//: Response
@@ -303,6 +294,7 @@ class FigureController extends AbstractController
         }
         else{
             //TODO addFlash pour dire que vous ne pouvez pas entrer dans une url de tricks d'autre personne
+            $this->addFlash('error', 'Le media ne vous partien pas');
             return $this->redirectToRoute('all_figure');
         }
     }
@@ -327,6 +319,7 @@ class FigureController extends AbstractController
 
         } else {
             //TODO addFlash pour dire que vous ne pouvez pas entrer dans une url de tricks d'autre personne
+            $this->addFlash('error', 'Le media ne vous partien pas');
             return $this->redirectToRoute('all_figure');
         }
     }

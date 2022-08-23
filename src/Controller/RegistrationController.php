@@ -33,16 +33,22 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+            $user->setActivated(false);
+
+            $token = bin2hex(random_bytes(16));
+
+            $user->setToken($token);
 
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email
 
-            return $userAuthenticator->authenticateUser(
+            /*return $userAuthenticator->authenticateUser(
                 $user,
                 $authenticator,
                 $request
-            );
+            );*/
+            return $this->redirectToRoute('all_figure');
         }
 
         return $this->render('registration/register.html.twig', [
