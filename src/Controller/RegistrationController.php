@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\ResetPassword;
 use App\Entity\User;
+use App\Form\ForgotPasswordType;
 use App\Form\RegistrationFormType;
+use App\Form\ResetPasswordType;
+use App\Form\RessetPasswordType;
 use App\Repository\UserRepository;
 use App\Security\UserAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,11 +26,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RegistrationController extends AbstractController
 {
-   /* protected $mailer;
-    public function __construct(MailerInterface $mailer)
-    {
-    $this->mailer = $mailer;
-    }*/
+    /* protected $mailer;
+     public function __construct(MailerInterface $mailer)
+     {
+     $this->mailer = $mailer;
+     }*/
 
     /**
      * @throws TransportExceptionInterface
@@ -43,7 +47,7 @@ class RegistrationController extends AbstractController
             //TODO setToken provisoire
             $user->setToken('test');
             $user->setPassword(
-            $userPasswordHasher->hashPassword(
+                $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
@@ -58,11 +62,11 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             $mail = (new Email())
-                  ->from("contact@snowtricks.com")
-                  ->to($user->getEmail())
-                  ->text("Voici votre lien de verification de mail https://127.0.0.1:8001/activate/" . $token)
-                  ->subject("Activation de compte sur SnowTricks pour " . $user->getUserName());
-                //TODO chager le url par le path dynamique de url
+                ->from("contact@snowtricks.com")
+                ->to($user->getEmail())
+                ->text("Voici votre lien de verification de mail https://127.0.0.1:8001/activate/" . $token)
+                ->subject("Activation de compte sur SnowTricks pour " . $user->getUserName());
+            //TODO chager le url par le path dynamique de url
 
             $mailer->send($mail);
 
@@ -87,7 +91,7 @@ class RegistrationController extends AbstractController
     public function activate($token, EntityManagerInterface $manager, UserRepository $userRepo): Response
     {
         $user = $userRepo->findOneBy(['token' => $token]);
-        if ( $user == null){
+        if ($user == null) {
             $this->addFlash('error', 'Votre compte est deja activé');
             return $this->redirectToRoute('homepage');
         }
@@ -103,5 +107,85 @@ class RegistrationController extends AbstractController
 
         return $this->redirectToRoute('homepage');
     }
+
+    #[Route('/mot-de-passe-oublie', name: 'forgot')]
+    public function forgotPassword(EntityManagerInterface $manager, MailerInterface $mailer, Request $request, UserRepository $userRepo): Response
+    {
+
+        if ($request->getMethod() == 'POST') {
+
+            $data = $request->request->all();
+            $email = $data['email'];
+
+            $user = $userRepo->findOneBy(['email' => $email]);
+
+            if (!$user) {
+
+                $this->addFlash(
+                    'error',
+                    'Cette adresse e-mail n\'existe pas!'
+                );
+            } else {
+
+                $token = bin2hex(random_bytes(16));
+                $user->setToken($token);
+
+                $manager->persist($user);
+                $manager->flush();
+
+                $mail = (new Email())
+                    ->from("contact@snowtricks.com")
+                    ->to($user->getEmail())
+                    ->text("Voici votre lien de verification de mail https://127.0.0.1:8001/nouveau-mot-de-passe/" . $token)
+                    ->subject("Activation de compte sur SnowTricks pour " . $user->getUserName());
+                //TODO chager le url par le path dynamique de url
+
+                $mailer->send($mail);
+
+                return $this->redirectToRoute('all_figure');
+            }
+
+        }
+        return $this->render('forgot/forgot.html.twig', [
+
+        ]);
+    }
+
+    #[Route('/nouveau-mot-de-passe/{token}', name: 'resset')]
+    public function ressetPassword(EntityManagerInterface $manager,$token, UserPasswordHasherInterface $passwordHasher, MailerInterface $mailer, Request $request, UserRepository $userRepo): Response
+    {
+
+        $resetPassword = new User();
+        $user = $userRepo->findOneBy(['token' => $token]);
+
+        if ($user) {
+
+            $form = $this->createForm(RessetPasswordType::class, $resetPassword);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                //TODO set token a null
+                $user->setToken('')
+                     ->setPassword($passwordHasher->hashPassword($user, $resetPassword->getPassword()));
+
+                $manager->persist($user);
+                $manager->flush();
+                $this->addFlash('success', 'Votre mot de passe a bien été modifié. Vous pouvez l\'utiliser pour vous connecter'
+                );
+
+                return $this->redirectToRoute('all_figure');
+            }
+        } else {
+
+            $this->addFlash('error', 'Le lien de réinitialisation du mot de passe n\'est plus valide'
+            );
+
+            return $this->redirectToRoute('all_figure');
+        }
+        return $this->render('resset/resset-password.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
 
 }

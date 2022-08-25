@@ -705,6 +705,16 @@ footer p{
     border-radius: 3px;
     padding: 5px 20px;
 }
+.login .forgot{
+    text-align: center;
+    margin-top: 25px;
+}
+.login .btn-forgot{
+    font-size: 17px;
+    font-family: 'League Spartan', serif;
+    color: #646464;
+    text-decoration: none;
+}
 @media(max-width: 425px){
     .login{
         width: 262px;
@@ -762,4 +772,39 @@ footer p{
     .register form input{
         width: 254px;
     }
+}
+
+/*forgot password*/
+.forgot-form{
+    text-align: center;
+    margin-top: 40px;
+}
+.forgot-form .block-form{
+    width: 310px;
+    margin: auto;
+    box-shadow: 0 0 30px 0px rgb(0 0 0 / 15%);
+    border-radius: 5px;
+}
+.forgot-form .block-form .form-content{
+    display: flex;
+    flex-direction: column;
+}
+.forgot-form .block-form .form-content label{
+    font-family: 'League Spartan', serif;
+    margin: 20px 0px;
+    font-size: 20px;
+}
+.forgot-form .block-form .form-content div{
+    margin-top: 23px;
+}
+.forgot-form .block-form .form-content input{
+    width: 75%;
+    margin: auto;
+}
+.forgot-form .block-form button{
+    margin: 20px;
+    background-color: white;
+    border: solid 1px gray;
+    padding: 4px 12px;
+    border-radius: 5px;
 }
