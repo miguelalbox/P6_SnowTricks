@@ -354,6 +354,7 @@ footer p{
     text-decoration: none;
 }
 /*Template modification img mis en avant et modal ajout media*/
+
 #figure .portrait .portrait-img{
     width: 100%;
     object-fit: cover;
@@ -549,6 +550,24 @@ footer p{
     }
 }
 /*Template figure single*/
+#figure-single .portrait{
+    position: relative;
+}
+#figure-single .portrait .btn-user{
+    position: absolute;
+    top: 7px;
+    right: 9px;
+    z-index: 1;
+    background: #d5d5d5;
+    padding: 6px 8px;
+    border-radius: 5px;
+}
+#figure-single .portrait .btn-user a{
+    text-decoration: none;
+    color: #2f2f2f;
+    font-size: 17px;
+    padding: 0 3px;
+}
 #figure-single .portrait .portrait-img{
     position: relative;
     height: 300px;

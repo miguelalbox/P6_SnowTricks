@@ -5,6 +5,15 @@
 {% block body %}
 <div id="figure-single">
     <section class="portrait">
+        {% if figure.user.id == user %}
+        <div class="btn-user">
+            <div>
+                <a href="{{ path('edit_figure', {'slug': figure.slug} ) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                <a href="{{ path('delete_figure', {'slug': figure.slug} ) }}"><i class="fa-solid fa-trash"></i></a>
+            </div>
+
+        </div>
+        {% endif %}
         {% if portrait == null %}
             <div class="portrait-img" style='background-image: url("/images/default.jpg");'>
                 <h1>{{ figure.title }}</h1>
