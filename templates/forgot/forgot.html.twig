@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mot de passe oublie?{% endblock %}
+
+{% block body %}
+    <div class="forgot-form">
+        <form method="post" action="{{path('forgot')}}">
+            <div class="block-form">
+            <div class="form-content">
+                <label for="email">Votre e-mail</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <button type="submit" class="btn">Envoyer</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

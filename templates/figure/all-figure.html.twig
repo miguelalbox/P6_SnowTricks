@@ -4,15 +4,21 @@
 
 {% block body %}
     <div id="all-figures">
-        <div class="section-one">
+        <div class="section-one" id="home">
             <div class="first-picture">
                 <p class="title-home">Bienvenue sur le site de Snow Tricks</p>
                 <img src="/images/home.jpg" alt="">
+                <a href="#tricks" class="arow">
+                    <i class="fa-solid fa-arrow-down"></i>
+                </a>
+
             </div>
         </div>
-        <div class="section-two">
+        <div class="section-two" id="tricks">
             <div class="articles">
+                {% if app.user %}
                 <a href="{{ path('add_figure') }}" class="article"><img class="add" src="/images/plus.png" alt="" ></a>
+                {% endif %}
                 {% for figure in figures  %}
 
                         <div class="article">
@@ -24,29 +30,55 @@
                                     <img class="portrait-img" src="/images/media/figures-img/{{ figure.getMainMedia.url}}" alt="">
                                 {% endif %}
                             </div>
+                            {% if figure.user.id == user %}
                             <div class="title">
                                 <p>{{ figure.title }}</p>
                             </div>
                             </a>
-                            <div class="btn-action">
-                                <div>
-                                    <a href="{{ path('edit_figure', {'slug': figure.slug} ) }}">Modifier</a>
+                                <div class="btn-action">
+                                    <div>
+                                        <a href="{{ path('edit_figure', {'slug': figure.slug} ) }}">Modifier</a>
+                                    </div>
+                                    <div>
+                                        <a href="{{ path('delete_figure', {'slug': figure.slug}) }}">Suprimer</a>
+                                    </div>
+
                                 </div>
-                               <div>
-                                   <a href="{{ path('delete_figure', {'slug': figure.slug}) }}">Suprimer</a>
-                               </div>
-
-                            </div>
+                                {% else %}
+                                    <div class="title" style="border-radius: 0px 0px 3px 3px;">
+                                        <p style="padding: 39px 0px">{{ figure.title }}</p>
+                                    </div>
+                                    </a>
+                            {% endif %}
                         </div>
-
-
                 {% endfor %}
             </div>
             {{ knp_pagination_render(figures) }}
+            <a href="#home" class="arow">
+                <i class="fa-solid fa-arrow-up"></i>
+            </a>
         </div>
+
     </div>
+{% endblock %}
+{% block javascripts %}
 
+<script>
+    var scroll ={
+        init: function(){
+            $('a[href^="#"]').click(function(){
+                var the_id = $(this).attr("href");
+                if (the_id === '#') {
+                    return;
+                }
+                $('html, body').animate({
+                    scrollTop:$(the_id).offset().top
+                }, 1200);
+                return false;
+            });
+        }
+    };
 
-
-
+    $(scroll.init);
+</script>
 {% endblock %}
