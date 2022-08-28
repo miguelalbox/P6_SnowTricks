@@ -4,13 +4,17 @@
 
 {% block body %}
     <div id="all-figures">
-        <div class="section-one">
+        <div class="section-one" id="home">
             <div class="first-picture">
                 <p class="title-home">Bienvenue sur le site de Snow Tricks</p>
                 <img src="/images/home.jpg" alt="">
+                <a href="#tricks" class="arow">
+                    <i class="fa-solid fa-arrow-down"></i>
+                </a>
+
             </div>
         </div>
-        <div class="section-two">
+        <div class="section-two" id="tricks">
             <div class="articles">
                 {% if app.user %}
                 <a href="{{ path('add_figure') }}" class="article"><img class="add" src="/images/plus.png" alt="" ></a>
@@ -46,17 +50,35 @@
                                     </div>
                                     </a>
                             {% endif %}
-
                         </div>
-
-
                 {% endfor %}
             </div>
             {{ knp_pagination_render(figures) }}
+            <a href="#home" class="arow">
+                <i class="fa-solid fa-arrow-up"></i>
+            </a>
         </div>
+
     </div>
+{% endblock %}
+{% block javascripts %}
 
+<script>
+    var scroll ={
+        init: function(){
+            $('a[href^="#"]').click(function(){
+                var the_id = $(this).attr("href");
+                if (the_id === '#') {
+                    return;
+                }
+                $('html, body').animate({
+                    scrollTop:$(the_id).offset().top
+                }, 1200);
+                return false;
+            });
+        }
+    };
 
-
-
+    $(scroll.init);
+</script>
 {% endblock %}

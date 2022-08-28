@@ -93,7 +93,7 @@ class RegistrationController extends AbstractController
         $user = $userRepo->findOneBy(['token' => $token]);
         if ($user == null) {
             $this->addFlash('error', 'Votre compte est deja activé');
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('all_figure');
         }
 
         $user->setActivated('1');
@@ -105,7 +105,7 @@ class RegistrationController extends AbstractController
         $this->addFlash('success', 'Votre compte est activé');
 
 
-        return $this->redirectToRoute('homepage');
+        return $this->redirectToRoute('all_figure');
     }
 
     #[Route('/mot-de-passe-oublie', name: 'forgot')]

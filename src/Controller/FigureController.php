@@ -101,10 +101,16 @@ class FigureController extends AbstractController
     #[Route('/figures/ajouter', name: 'add_figure')]
     public function add(Request $request, EntityManagerInterface $manager, FiguresRepository $figureRepo, GroupsRepository $groupsRepo): Response
     {
+
+
         $figure = new Figures;
         //ajout d'utilisateur en session
         $user = $this->getUser();
         //dd($user);
+        if ($user == null) {
+            $this->addFlash('error', 'Vous devez d\'abord vous connecter');
+            return $this->redirectToRoute('all_figure');
+        }
 
         $groups = $groupsRepo->findAll();
         $groupsFigure = [];
@@ -248,7 +254,7 @@ class FigureController extends AbstractController
         ]);
     }
     #[Route('/figures/suprimer/{slug}', name: 'delete_figure')]
-    public function delete($slug, EntityManagerInterface $manager, FiguresRepository $figureRepo, Figures $figure, MediaRepository $mediaRepo )//: Response
+    public function delete($slug, EntityManagerInterface $manager, FiguresRepository $figureRepo, Figures $figure, MediaRepository $mediaRepo, Media $media )//: Response
     {
         $figureUser = $figure->getUser();
         //TODO securite, on ne peut pas acceder si on n'est pas l'utilisateur
@@ -256,8 +262,29 @@ class FigureController extends AbstractController
             $this->addFlash('error', 'La figure ne vous partien pas');
             return $this->redirectToRoute('all_figure');
         }
-            $figure = $figureRepo->findOneBy(['slug' => $slug]);
-            //TODO suprimer image en cascade je recupere les images de la figure puis pour chaque une des entite je suprime le fichier avec un boucle for avec unlink
+        $figures = $figureRepo->findOneBy(['slug' => $slug]);
+        $mediasFigures = $mediaRepo->findBy(['figure' => $figure->getId()]);
+
+        //TODO suprimer image en cascade je recupere les images de la figure puis pour chaque une des entite je suprime le fichier avec un boucle for avec unlink
+
+        //TODO il suprime une seul image pour le moment
+
+        /*foreach ($mediasFigures as $mediasFigure) {
+            $url = $media->getUrl();
+            $nameImg = $this->getParameter('figures_img_directory') . '/' . $url;
+            //si elle existe
+            //dd($mediasFigure->getUrl());
+            if ($mediasFigure->isImage() == true){
+                //dd($mediasFigure->isImage());
+                if ($mediasFigure->getUrl() == $url) {
+                    //dd($mediasFigure->getUrl());
+                    unlink($nameImg);
+                }
+            }
+
+        }
+
+        dd($mediasFigures);*/
 
             $manager->remove($figure);
             $manager->flush();

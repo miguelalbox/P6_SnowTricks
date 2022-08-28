@@ -101,6 +101,27 @@ footer p{
     max-width: 1920px;
     margin: auto;
 }
+#all-figures .section-one .first-picture .arow{
+    position: absolute;
+    bottom: 46px;
+    right: 10px;
+    background-color: #434343;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 23px;
+    color: white;
+    text-decoration: none;
+}
+#all-figures .section-two .arow{
+    position: absolute;
+    right: 10px;
+    background-color: #434343;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 23px;
+    color: white;
+    text-decoration: none;
+}
 #all-figures .section-one .first-picture .title-home{
     position: absolute;
     left: 5%;
