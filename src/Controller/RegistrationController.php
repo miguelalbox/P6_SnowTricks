@@ -97,7 +97,7 @@ class RegistrationController extends AbstractController
         }
 
         $user->setActivated('1');
-        $user->setToken('');
+        $user->setToken(null);
 //TODO je n'arrive pas a metre le setToken en null
 
         $manager->persist($user);
@@ -165,7 +165,7 @@ class RegistrationController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
                 //TODO set token a null
-                $user->setToken('')
+                $user->setToken(null)
                      ->setPassword($passwordHasher->hashPassword($user, $resetPassword->getPassword()));
 
                 $manager->persist($user);

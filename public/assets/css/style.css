@@ -96,7 +96,7 @@ hr {
     margin: 20px 0 10px 0;
     background-color: white;
 }
-.clearfix a{
+.clearfix .deletebtn{
     width: 35%;
     border: solid 1px gray;
     border-radius: 5px;

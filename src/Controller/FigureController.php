@@ -289,8 +289,8 @@ class FigureController extends AbstractController
             'portrait' => $portrait,
         ]);
     }
-    #[Route('/figures/suprimer/{slug}', name: 'delete_figure')]
-    public function delete($slug, EntityManagerInterface $manager, FiguresRepository $figureRepo, Figures $figure, MediaRepository $mediaRepo)//: Response
+    #[Route('/figures/suprimer/{id}', name: 'delete_figure')]
+    public function delete( EntityManagerInterface $manager, FiguresRepository $figureRepo, Figures $figure, MediaRepository $mediaRepo)//: Response
     {
         $figureUser = $figure->getUser();
         //TODO securite, on ne peut pas acceder si on n'est pas l'utilisateur
@@ -299,38 +299,26 @@ class FigureController extends AbstractController
             return $this->redirectToRoute('all_figure');
         }
 
-        $figures = $figureRepo->findOneBy(['slug' => $slug]);
+        //$figures = $figureRepo->findOneBy(['slug' => $slug]);
 
-        $mediasFigures = $mediaRepo->findBy(['figure' => $figure->getId()]);
+        //$mediasFigures = $mediaRepo->findBy(['figure' => $figure->getId()]);
         //TODO suprimer image en cascade je recupere les images de la figure puis pour chaque une des entite je suprime le fichier avec un boucle for avec unlink
 
         //TODO il suprime une seul image pour le moment
 
-        /*$groupsImages = [];
 
-        foreach ($mediasFigures as $mediasFigure){
-            $groupsImages[$mediasFigure->getUrl()] = $mediasFigure->getUrl();
-        }
-        dd($groupsImages);
+        foreach ($figure->getMedia() as $media){
 
+            if ($media->isImage()){
 
+                $path = $this->getParameter('figures_img_directory') . '/' . $media->getUrl();
 
-        /*foreach ($mediasFigures as $mediasFigure) {
-            $url = $media->getUrl();
-            $nameImg = $this->getParameter('figures_img_directory') . '/' . $url;
-            //si elle existe
-            //dd($mediasFigure->getUrl());
-            if ($mediasFigure->isImage() == true){
-                //dd($mediasFigure->isImage());
-                if ($mediasFigure->getUrl() == $url) {
-                    //dd($mediasFigure->getUrl());
-                    unlink($nameImg);
+                if (file_exists($path)){
+                    unlink($path);
                 }
+
             }
-
         }
-
-        dd($mediasFigures);*/
 
             $manager->remove($figure);
             $manager->flush();

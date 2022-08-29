@@ -78,7 +78,7 @@
                 <a class="btn-reject" href="{{ path('all_figure') }}">Annuler</a>
             </div>
             <div class="btn-form">
-                <a href="{{ path('delete_figure', {'slug': figure.slug}) }}" class="delete">Supprimer la figure</a>
+                <a href="{{ path('delete_figure', {'id': figure.id}) }}" class="delete">Supprimer la figure</a>
             </div>
             {{ form_end(form) }}
 
