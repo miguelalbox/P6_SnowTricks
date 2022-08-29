@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Comments;
 use App\Entity\Figures;
 use App\Entity\Groups;
 use App\Entity\Media;
+use App\Form\CommentType;
 use App\Form\FigureType;
 use App\Form\MediaType;
 use App\Form\VideoType;
+use App\Repository\CommentsRepository;
 use App\Repository\FiguresRepository;
 use App\Repository\GroupsRepository;
 use App\Repository\MediaRepository;
@@ -43,7 +46,7 @@ class FigureController extends AbstractController
         $figuresAll = $paginator->paginate(
             $figures, // Requête contenant les données à paginer (ici nos articles)
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
-            8 // Nombre de résultats par page
+            9 // Nombre de résultats par page
         );
 
         $portrait = $mediaRepo->findBy([  'figure' => $figures]);
@@ -64,7 +67,7 @@ class FigureController extends AbstractController
         $figuresAll = $paginator->paginate(
             $figures, // Requête contenant les données à paginer (ici nos articles)
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
-            8// Nombre de résultats par page
+            9// Nombre de résultats par page
         );
 
         $portrait = $mediaRepo->findBy([  'figure' => $figures]);
@@ -76,15 +79,14 @@ class FigureController extends AbstractController
     }
 
     #[Route('/figure/{id}', name: 'single_figure')]
-    public function single(Figures $figures, MediaRepository $mediaRepo,FiguresRepository $figuresRepo, GroupsRepository $groupsRepo): Response
+    public function single(Figures $figures, MediaRepository $mediaRepo,FiguresRepository $figuresRepo, GroupsRepository $groupsRepo, $id, Request $request, EntityManagerInterface $manager, CommentsRepository $commentsRepo): Response
     {
         $groups = $groupsRepo->findAll();
-        $figureGroup = $figuresRepo->findOneBy(['groups' => $groups]);
+        $figureGroup = $figuresRepo->findOneBy(['id' => $id]);
 //dd($figureGroup->getGroups()->getFigureGroup());
-
         $figure = $figures;
-        
-
+        $figureComments = $commentsRepo->findBy(['figureId' => $id]);
+        //dd($figureComments);
 
         if ($this->getUser()){
             $user = $this->getUser()->getId();
@@ -103,6 +105,22 @@ class FigureController extends AbstractController
         }
         //dd($group->getFigureGroup());
 
+        $comment = New Comments();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setCreatedAt(new \DateTimeImmutable());
+            $comment->setUser($this->getUser());
+            $comment->setFigureId($figure);
+
+            $manager->persist($comment);
+            $manager->flush();
+            $this->addFlash("success", "Le commentaire a bien été ajouté" );
+
+            return $this->redirect($request->getUri());
+        }
+
 
         return $this->render('figure/single-figure.html.twig', [
             'figure' => $figure,
@@ -112,16 +130,14 @@ class FigureController extends AbstractController
             'group' => $figureGroup->getGroups()->getFigureGroup(),
             'user' => $user,
             'figuresUser' => $figuresUser,
+            'commentForm' => $form->createView(),
+            'comments' => $figureComments,
         ]);
     }
 
     #[Route('/figures/ajouter', name: 'add_figure')]
     public function add(Request $request, EntityManagerInterface $manager, FiguresRepository $figureRepo, GroupsRepository $groupsRepo): Response
     {
-
-
-
-
 
         $figure = new Figures;
 //ajout d'utilisateur en session

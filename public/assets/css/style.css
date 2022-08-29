@@ -779,6 +779,44 @@ footer p{
     margin-bottom: 15px;
     margin-top: 15px;
 }
+#figure-single .commentaires .comment-form form div{
+    display: flex;
+    flex-direction: column;
+    width: 588px;
+    margin: auto;
+}
+@media(max-width: 639px){
+    #figure-single .commentaires .comment-form form div{
+        width: 386px;
+    }
+}
+@media(max-width: 411px){
+    #figure-single .commentaires .comment-form form div{
+        width: 300px;
+    }
+}
+@media(max-width: 332px){
+    #figure-single .commentaires .comment-form form div{
+        width: 286px;
+    }
+}
+#figure-single .commentaires .comment-form form div label{
+    font-family: 'Raleway', sans-serif;
+    margin-bottom: 13px;
+    font-size: 22px;
+}
+#figure-single .commentaires .comment-form form div textarea{
+    border-radius: 5px;
+    border: solid 1px black;
+}
+#figure-single .commentaires .comment-form form button{
+    margin-top: 14px;
+    background-color: white;
+    border: solid 1px gray;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
 #figure-single .commentaires .commentaires-all .commentaire{
     display: flex;
     flex-direction: row;
@@ -786,11 +824,26 @@ footer p{
     justify-content: center;
     margin: 10px 0;
 }
-#figure-single .commentaires .commentaires-all .commentaire .author-img img{
+#figure-single .commentaires .commentaires-all .commentaire .author-img .color-initial{
     width: 70px;
     height: 70px;
     object-fit: cover;
     border-radius: 50px;
+    background-color: rgba(255, 196, 0, 0.32);
+    position: relative;
+    margin-top: 10px;
+    /*background-color: red;
+    padding: 25px;
+    border-radius: 50px;
+    height: 15px;
+    margin-top: 10px;*/
+}
+#figure-single .commentaires .commentaires-all .commentaire .author-img .color-initial .initial-user{
+    position: absolute;
+    left: 29%;
+    top: -26%;
+    font-size: 34px;
+    font-family: 'Raleway', sans-serif;
 }
 #figure-single .commentaires .commentaires-all .commentaire .commentaire-text{
     border: solid 1px black;
@@ -798,6 +851,21 @@ footer p{
     padding: 5px;
     margin: 5px 15px 10px 15px;
     font-family: 'League Spartan', serif;
+    width: 500px;
+    max-width: 500px;
+}
+@media(max-width: 639px){
+    #figure-single .commentaires .commentaires-all .commentaire .commentaire-text{
+        width: 300px;
+        max-width: 300px;
+    }
+}
+#figure-single .commentaires .commentaires-all .commentaire .commentaire-text .content{
+    margin: 11px 10px;
+}
+#figure-single .commentaires .commentaires-all .commentaire .commentaire-text .date{
+    text-align: end;
+    font-size: 12px;
 }
 #figure-single .commentaires .commentaires-all .commentaires-paginator{
     text-align: center;
@@ -953,7 +1021,7 @@ footer p{
 }
 .forgot-form .block-form .form-content label{
     font-family: 'League Spartan', serif;
-    margin: 20px 0px;
+    margin: 20px 0;
     font-size: 20px;
 }
 .forgot-form .block-form .form-content div{

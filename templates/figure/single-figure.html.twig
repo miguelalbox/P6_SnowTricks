@@ -73,21 +73,31 @@
         </div>
     </section>
     <section class="commentaires">
+        {% if user != null %}
         <div class="comment-form">
             <hr>
-            Ajouter le form de commentaires
+            {{ form_start(commentForm) }}
+            {{ form_row(commentForm.content) }}
+            <button type="submit" class="btn-send">Envoyer</button>
+            {{ form_end(commentForm) }}
             <hr>
         </div>
+        {% endif %}
         <div class="commentaires-all">
+            {% for comment in comments %}
             <div class="commentaire">
                 <div class="author-img">
-                    <img src="/images/default.jpg" alt="">
+                    <div class="color-initial">
+                        <p class="initial-user">{{ comment.user.username |slice(0, 1) }}</p>
+                    </div>
                 </div>
                 <div class="commentaire-text">
-                    <p>Aficher le commentaire</p>
+                    <p class="content">{{ comment.content }}</p>
+                    <p class="date">{{ comment.createdAt |date("d/m/Y") }}</p>
                 </div>
             </div>
-            <div class="commentaire">
+            {% endfor %}
+            {#  <div class="commentaire">
                 <div class="author-img">
                     <img src="/images/default.jpg" alt="">
                 </div>
@@ -105,7 +115,7 @@
             </div>
             <div class="commentaires-paginator">
                 <button>Faire la pagination</button>
-            </div>
+            </div>#}
 
         </div>
     </section>

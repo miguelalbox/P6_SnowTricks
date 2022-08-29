@@ -41,12 +41,16 @@ class Figures
     #[ORM\JoinColumn(nullable: false)]
     private $user;
 
+    #[ORM\OneToMany(mappedBy: 'figureId', targetEntity: Comments::class, orphanRemoval: true)]
+    private Collection $comments;
+
 
 
 
     public function __construct()
     {
         $this->media = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
 
@@ -178,6 +182,36 @@ class Figures
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comments>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comments $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setFigureId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comments $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getFigureId() === $this) {
+                $comment->setFigureId(null);
+            }
+        }
 
         return $this;
     }
