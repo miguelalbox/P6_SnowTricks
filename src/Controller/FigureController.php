@@ -79,14 +79,20 @@ class FigureController extends AbstractController
     }
 
     #[Route('/figure/{id}', name: 'single_figure')]
-    public function single(Figures $figures, MediaRepository $mediaRepo,FiguresRepository $figuresRepo, GroupsRepository $groupsRepo, $id, Request $request, EntityManagerInterface $manager, CommentsRepository $commentsRepo): Response
+    public function single(Figures $figures, PaginatorInterface $paginator, MediaRepository $mediaRepo,FiguresRepository $figuresRepo, GroupsRepository $groupsRepo, $id, Request $request, EntityManagerInterface $manager, CommentsRepository $commentsRepo): Response
     {
         $groups = $groupsRepo->findAll();
         $figureGroup = $figuresRepo->findOneBy(['id' => $id]);
 //dd($figureGroup->getGroups()->getFigureGroup());
         $figure = $figures;
-        $figureComments = $commentsRepo->findBy(['figureId' => $id]);
+        $figureComments = $commentsRepo->findBy(['figureId' => $id,]);
         //dd($figureComments);
+        $figureCommentsPaginator = $paginator->paginate(
+            $figureComments, // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1,), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            4 // Nombre de résultats par page
+
+        );
 
         if ($this->getUser()){
             $user = $this->getUser()->getId();
@@ -131,7 +137,7 @@ class FigureController extends AbstractController
             'user' => $user,
             'figuresUser' => $figuresUser,
             'commentForm' => $form->createView(),
-            'comments' => $figureComments,
+            'comments' => $figureCommentsPaginator,
         ]);
     }
 
