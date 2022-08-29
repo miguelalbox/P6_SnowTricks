@@ -5,6 +5,28 @@
 {% block body %}
 <div id="figure-single">
     <section class="portrait">
+        {% if figure.user.id == user %}
+        <div class="btn-user">
+            <div>
+                <a href="{{ path('edit_figure', {'slug': figure.slug} ) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                {#  <a href="{{ path('delete_figure', {'slug': figure.slug} ) }}"><i class="fa-solid fa-trash"></i></a>#}
+                <a onclick="document.getElementById('id01').style.display='block'"><i class="fa-solid fa-trash"></i></a>
+            </div>
+            <div id="id01" class="modal">
+                <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+                <div class="modal-content">
+                    <div class="container">
+                        <h1>Êtes vous sûr de vouloir supprimer {{ figure.title }}</h1>
+
+                        <div class="clearfix">
+                            <button type="button" class="cancelbtn" onclick="document.getElementById('id01').style.display='none'">Annuler</button>
+                            <a href="{{ path('delete_figure', {'id': figure.id} ) }}" class="deletebtn">Supprimer</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
         {% if portrait == null %}
             <div class="portrait-img" style='background-image: url("/images/default.jpg");'>
                 <h1>{{ figure.title }}</h1>
@@ -51,21 +73,32 @@
         </div>
     </section>
     <section class="commentaires">
+        {% if user != null %}
         <div class="comment-form">
             <hr>
-            Ajouter le form de commentaires
+            {{ form_start(commentForm) }}
+            {{ form_row(commentForm.content) }}
+            <button type="submit" class="btn-send">Envoyer</button>
+            {{ form_end(commentForm) }}
             <hr>
         </div>
+        {% endif %}
         <div class="commentaires-all">
+            {% for comment in comments %}
             <div class="commentaire">
                 <div class="author-img">
-                    <img src="/images/default.jpg" alt="">
+                    <div class="color-initial">
+                        <p class="initial-user">{{ comment.user.username |slice(0, 1) }}</p>
+                    </div>
                 </div>
                 <div class="commentaire-text">
-                    <p>Aficher le commentaire</p>
+                    <p class="content">{{ comment.content }}</p>
+                    <p class="date">{{ comment.createdAt |date("d/m/Y") }}</p>
                 </div>
             </div>
-            <div class="commentaire">
+            {% endfor %}
+            {{ knp_pagination_render(comments) }}
+            {#  <div class="commentaire">
                 <div class="author-img">
                     <img src="/images/default.jpg" alt="">
                 </div>
@@ -83,7 +116,7 @@
             </div>
             <div class="commentaires-paginator">
                 <button>Faire la pagination</button>
-            </div>
+            </div>#}
 
         </div>
     </section>
@@ -96,5 +129,16 @@
                 $("#media-hide").toggleClass("hidden");
             });
 
+    </script>
+    <script>
+        // Get the modal
+        var modal = document.getElementById('id01');
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
     </script>
 {% endblock %}

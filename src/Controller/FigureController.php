@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Comments;
 use App\Entity\Figures;
 use App\Entity\Groups;
 use App\Entity\Media;
+use App\Form\CommentType;
 use App\Form\FigureType;
 use App\Form\MediaType;
 use App\Form\VideoType;
+use App\Repository\CommentsRepository;
 use App\Repository\FiguresRepository;
 use App\Repository\GroupsRepository;
 use App\Repository\MediaRepository;
@@ -43,7 +46,7 @@ class FigureController extends AbstractController
         $figuresAll = $paginator->paginate(
             $figures, // Requête contenant les données à paginer (ici nos articles)
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
-            2 // Nombre de résultats par page
+            9 // Nombre de résultats par page
         );
 
         $portrait = $mediaRepo->findBy([  'figure' => $figures]);
@@ -55,7 +58,7 @@ class FigureController extends AbstractController
             'figuresUser' => $figuresUser,
         ]);
     }
-    #[Route('/figures/mes-figures', name: 'all_figure_user')]
+    #[Route('/mes-figures', name: 'all_figure_user')]
     public function allFiguresUser(FiguresRepository $figuresRepo, MediaRepository $mediaRepo, PaginatorInterface $paginator, Request $request): Response
     {
         $user = $this->getUser();
@@ -64,7 +67,7 @@ class FigureController extends AbstractController
         $figuresAll = $paginator->paginate(
             $figures, // Requête contenant les données à paginer (ici nos articles)
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
-            2// Nombre de résultats par page
+            9// Nombre de résultats par page
         );
 
         $portrait = $mediaRepo->findBy([  'figure' => $figures]);
@@ -75,11 +78,30 @@ class FigureController extends AbstractController
         ]);
     }
 
-    #[Route('/figures/figure/{id}', name: 'single_figure')]
-    public function single(Figures $figures, MediaRepository $mediaRepo, Groups $groups): Response
+    #[Route('/figure/{id}', name: 'single_figure')]
+    public function single(Figures $figures, PaginatorInterface $paginator, MediaRepository $mediaRepo,FiguresRepository $figuresRepo, GroupsRepository $groupsRepo, $id, Request $request, EntityManagerInterface $manager, CommentsRepository $commentsRepo): Response
     {
+        $groups = $groupsRepo->findAll();
+        $figureGroup = $figuresRepo->findOneBy(['id' => $id]);
+//dd($figureGroup->getGroups()->getFigureGroup());
         $figure = $figures;
-        $group = $groups;
+        $figureComments = $commentsRepo->findBy(['figureId' => $id,]);
+        //dd($figureComments);
+        $figureCommentsPaginator = $paginator->paginate(
+            $figureComments, // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1,), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            4 // Nombre de résultats par page
+
+        );
+
+        if ($this->getUser()){
+            $user = $this->getUser()->getId();
+            $figuresUser = $figuresRepo->findby(['user' => $user]);
+        }
+        else{
+            $user = null;
+            $figuresUser = null;
+        }
 
         $mediaExist = $mediaRepo->findBy(['figure' => $figure->getId()]);
         if ($mediaExist =! null) {
@@ -89,12 +111,33 @@ class FigureController extends AbstractController
         }
         //dd($group->getFigureGroup());
 
+        $comment = New Comments();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setCreatedAt(new \DateTimeImmutable());
+            $comment->setUser($this->getUser());
+            $comment->setFigureId($figure);
+
+            $manager->persist($comment);
+            $manager->flush();
+            $this->addFlash("success", "Le commentaire a bien été ajouté" );
+
+            return $this->redirect($request->getUri());
+        }
+
+
         return $this->render('figure/single-figure.html.twig', [
             'figure' => $figure,
             'mediasImg' => $ImgByFigure,
             'mediasVideo' => $VideoByFigure,
             'portrait' => $portrait,
-            'group' => $group->getFigureGroup(),
+            'group' => $figureGroup->getGroups()->getFigureGroup(),
+            'user' => $user,
+            'figuresUser' => $figuresUser,
+            'commentForm' => $form->createView(),
+            'comments' => $figureCommentsPaginator,
         ]);
     }
 
@@ -102,16 +145,9 @@ class FigureController extends AbstractController
     public function add(Request $request, EntityManagerInterface $manager, FiguresRepository $figureRepo, GroupsRepository $groupsRepo): Response
     {
 
-
         $figure = new Figures;
-        //ajout d'utilisateur en session
+//ajout d'utilisateur en session
         $user = $this->getUser();
-        //dd($user);
-        if ($user == null) {
-            $this->addFlash('error', 'Vous devez d\'abord vous connecter');
-            return $this->redirectToRoute('all_figure');
-        }
-
         $groups = $groupsRepo->findAll();
         $groupsFigure = [];
 
@@ -253,8 +289,8 @@ class FigureController extends AbstractController
             'portrait' => $portrait,
         ]);
     }
-    #[Route('/figures/suprimer/{slug}', name: 'delete_figure')]
-    public function delete($slug, EntityManagerInterface $manager, FiguresRepository $figureRepo, Figures $figure, MediaRepository $mediaRepo, Media $media )//: Response
+    #[Route('/figures/suprimer/{id}', name: 'delete_figure')]
+    public function delete( EntityManagerInterface $manager, FiguresRepository $figureRepo, Figures $figure, MediaRepository $mediaRepo)//: Response
     {
         $figureUser = $figure->getUser();
         //TODO securite, on ne peut pas acceder si on n'est pas l'utilisateur
@@ -262,29 +298,27 @@ class FigureController extends AbstractController
             $this->addFlash('error', 'La figure ne vous partien pas');
             return $this->redirectToRoute('all_figure');
         }
-        $figures = $figureRepo->findOneBy(['slug' => $slug]);
-        $mediasFigures = $mediaRepo->findBy(['figure' => $figure->getId()]);
 
+        //$figures = $figureRepo->findOneBy(['slug' => $slug]);
+
+        //$mediasFigures = $mediaRepo->findBy(['figure' => $figure->getId()]);
         //TODO suprimer image en cascade je recupere les images de la figure puis pour chaque une des entite je suprime le fichier avec un boucle for avec unlink
 
         //TODO il suprime une seul image pour le moment
 
-        /*foreach ($mediasFigures as $mediasFigure) {
-            $url = $media->getUrl();
-            $nameImg = $this->getParameter('figures_img_directory') . '/' . $url;
-            //si elle existe
-            //dd($mediasFigure->getUrl());
-            if ($mediasFigure->isImage() == true){
-                //dd($mediasFigure->isImage());
-                if ($mediasFigure->getUrl() == $url) {
-                    //dd($mediasFigure->getUrl());
-                    unlink($nameImg);
+
+        foreach ($figure->getMedia() as $media){
+
+            if ($media->isImage()){
+
+                $path = $this->getParameter('figures_img_directory') . '/' . $media->getUrl();
+
+                if (file_exists($path)){
+                    unlink($path);
                 }
+
             }
-
         }
-
-        dd($mediasFigures);*/
 
             $manager->remove($figure);
             $manager->flush();

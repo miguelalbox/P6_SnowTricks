@@ -26,13 +26,27 @@
                                     <a href="{{ path('edit_figure', {'slug': figure.slug} ) }}">Modifier</a>
                                 </div>
                                <div>
-                                   <a href="{{ path('delete_figure', {'slug': figure.slug}) }}">Suprimer</a>
+                                   <a onclick="document.getElementById('delete-{{ figure.id }}').style.display='block'" data-target="#delete-{{ figure.id }}">Suprimer</a>
                                </div>
 
                             </div>
                         </div>
 
+                    <div class="modal" id="delete-{{ figure.id }}">
+                        <span onclick="document.getElementById('delete-{{ figure.id }}').style.display='none'" class="close" title="Close Modal">&times;</span>
+                        <form class="modal-content" action="{{ path('delete_figure', {'id': figure.id}) }}" method="post">
+                            <div class="container">
+                                <h1>Êtes vous sur de vouloir supprimer {{ figure.title }}</h1>
+                                <div class="clearfix">
 
+                                        <input type="hidden" name="actuality" value="{{ figure.id }}">
+
+                                        <button onclick="document.getElementById('delete-{{ figure.id }}').style.display='none'" type="button" class="cancelbtn" data-dismiss="modal">Non</button>
+                                        <button type="submit" class="deletebtn">Oui</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 {% endfor %}
             </div>
             {{ knp_pagination_render(figures) }}
@@ -42,4 +56,19 @@
 
 
 
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    // Get the modal
+    {% for figure in figures %}
+    var modal = document.getElementById('delete-{{ figure.id }}');
+    {% endfor %}
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
 {% endblock %}

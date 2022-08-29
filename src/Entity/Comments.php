@@ -23,6 +23,10 @@ class Comments
     #[ORM\JoinColumn(nullable: false)]
     private $user;
 
+    #[ORM\ManyToOne(inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Figures $figureId = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +64,18 @@ class Comments
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getFigureId(): ?Figures
+    {
+        return $this->figureId;
+    }
+
+    public function setFigureId(?Figures $figureId): self
+    {
+        $this->figureId = $figureId;
 
         return $this;
     }
