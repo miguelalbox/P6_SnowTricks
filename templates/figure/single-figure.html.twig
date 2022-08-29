@@ -9,9 +9,22 @@
         <div class="btn-user">
             <div>
                 <a href="{{ path('edit_figure', {'slug': figure.slug} ) }}"><i class="fa-solid fa-pen-to-square"></i></a>
-                <a href="{{ path('delete_figure', {'slug': figure.slug} ) }}"><i class="fa-solid fa-trash"></i></a>
+                {#  <a href="{{ path('delete_figure', {'slug': figure.slug} ) }}"><i class="fa-solid fa-trash"></i></a>#}
+                <a onclick="document.getElementById('id01').style.display='block'"><i class="fa-solid fa-trash"></i></a>
             </div>
+            <div id="id01" class="modal">
+                <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+                <div class="modal-content">
+                    <div class="container">
+                        <h1>Êtes vous sûr de vouloir supprimer {{ figure.title }}</h1>
 
+                        <div class="clearfix">
+                            <button type="button" class="cancelbtn" onclick="document.getElementById('id01').style.display='none'">Annuler</button>
+                            <a href="{{ path('delete_figure', {'slug': figure.slug} ) }}" class="deletebtn">Supprimer</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         {% endif %}
         {% if portrait == null %}
@@ -105,5 +118,16 @@
                 $("#media-hide").toggleClass("hidden");
             });
 
+    </script>
+    <script>
+        // Get the modal
+        var modal = document.getElementById('id01');
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
     </script>
 {% endblock %}

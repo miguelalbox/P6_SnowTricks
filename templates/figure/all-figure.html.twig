@@ -40,9 +40,22 @@
                                         <a href="{{ path('edit_figure', {'slug': figure.slug} ) }}">Modifier</a>
                                     </div>
                                     <div>
-                                        <a href="{{ path('delete_figure', {'slug': figure.slug}) }}">Suprimer</a>
+                                        <a onclick="document.getElementById('id01').style.display='block'">Supprimer</a>
                                     </div>
 
+                                </div>
+                                <div id="id01" class="modal">
+                                    <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+                                    <div class="modal-content">
+                                        <div class="container">
+                                            <h1>Êtes vous sûr de vouloir supprimer {{ figure.title }}</h1>
+
+                                            <div class="clearfix">
+                                                <button type="button" class="cancelbtn" onclick="document.getElementById('id01').style.display='none'">Annuler</button>
+                                                <a href="{{ path('delete_figure', {'slug': figure.slug}) }}" class="deletebtn">Supprimer</a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 {% else %}
                                     <div class="title" style="border-radius: 0px 0px 3px 3px;">
@@ -81,4 +94,15 @@
 
     $(scroll.init);
 </script>
+    <script>
+        // Get the modal
+        var modal = document.getElementById('id01');
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 {% endblock %}
