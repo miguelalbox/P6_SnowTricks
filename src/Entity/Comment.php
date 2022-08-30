@@ -25,7 +25,7 @@ class Comment
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Figures $figureId = null;
+    private ?Figure $figureId = null;
 
     public function getId(): ?int
     {
@@ -68,12 +68,12 @@ class Comment
         return $this;
     }
 
-    public function getFigureId(): ?Figures
+    public function getFigureId(): ?Figure
     {
         return $this->figureId;
     }
 
-    public function setFigureId(?Figures $figureId): self
+    public function setFigureId(?Figure $figureId): self
     {
         $this->figureId = $figureId;
 

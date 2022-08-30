@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\FiguresRepository;
+use App\Repository\FigureRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: FiguresRepository::class)]
-class Figures
+#[ORM\Entity(repositoryClass: FigureRepository::class)]
+class Figure
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

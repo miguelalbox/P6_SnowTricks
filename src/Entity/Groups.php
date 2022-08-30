@@ -18,7 +18,7 @@ class Groups
     #[ORM\Column(type: 'string', length: 20)]
     private $figure_group;
 
-    #[ORM\OneToMany(mappedBy: 'groups', targetEntity: Figures::class)]
+    #[ORM\OneToMany(mappedBy: 'groups', targetEntity: Figure::class)]
     private $figures;
 
     public function __construct()
@@ -44,14 +44,14 @@ class Groups
     }
 
     /**
-     * @return Collection<int, Figures>
+     * @return Collection<int, Figure>
      */
     public function getFigures(): Collection
     {
         return $this->figures;
     }
 
-    public function addFigure(Figures $figure): self
+    public function addFigure(Figure $figure): self
     {
         if (!$this->figures->contains($figure)) {
             $this->figures[] = $figure;
@@ -61,7 +61,7 @@ class Groups
         return $this;
     }
 
-    public function removeFigure(Figures $figure): self
+    public function removeFigure(Figure $figure): self
     {
         if ($this->figures->removeElement($figure)) {
             // set the owning side to null (unless already changed)
