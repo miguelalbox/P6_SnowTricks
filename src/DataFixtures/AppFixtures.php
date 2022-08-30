@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Figures;
+use App\Entity\Figure;
 use App\Entity\Groups;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -23,7 +23,7 @@ class AppFixtures extends Fixture
             $manager->flush();
         }
         /*for ($i = 0; $i <20; $i++){
-            $figure = new Figures();
+            $figure = new Figure();
             $figure->setDescription("Description $i");
             $figure->setGroups($listGroupEntity[0]);
             $figure->setTitle("Title $i");

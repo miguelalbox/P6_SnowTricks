@@ -24,7 +24,7 @@ class Media
     #[ORM\Column(type: 'boolean')]
     private $image;
 
-    #[ORM\ManyToOne(targetEntity: Figures::class, inversedBy: 'media')]
+    #[ORM\ManyToOne(targetEntity: Figure::class, inversedBy: 'media')]
     private $figure;
 
 
@@ -69,12 +69,12 @@ class Media
         return $this;
     }
 
-    public function getFigure(): ?Figures
+    public function getFigure(): ?Figure
     {
         return $this->figure;
     }
 
-    public function setFigure(?Figures $figure): self
+    public function setFigure(?Figure $figure): self
     {
         $this->figure = $figure;
 

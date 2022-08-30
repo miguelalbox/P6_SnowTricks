@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Figures;
+use App\Entity\Figure;
 use App\Entity\Groups;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -41,7 +41,7 @@ class FigureType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Figures::class,
+            'data_class' => Figure::class,
         ]);
     }
 }

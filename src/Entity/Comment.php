@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\CommentsRepository;
+use App\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CommentsRepository::class)]
-class Comments
+#[ORM\Entity(repositoryClass: CommentRepository::class)]
+class Comment
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -25,7 +25,7 @@ class Comments
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Figures $figureId = null;
+    private ?Figure $figureId = null;
 
     public function getId(): ?int
     {
@@ -68,12 +68,12 @@ class Comments
         return $this;
     }
 
-    public function getFigureId(): ?Figures
+    public function getFigureId(): ?Figure
     {
         return $this->figureId;
     }
 
-    public function setFigureId(?Figures $figureId): self
+    public function setFigureId(?Figure $figureId): self
     {
         $this->figureId = $figureId;
 

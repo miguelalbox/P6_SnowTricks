@@ -2,16 +2,15 @@
 
 namespace App\Controller;
 
-use App\Entity\Comments;
-use App\Entity\Figures;
-use App\Entity\Groups;
+use App\Entity\Comment;
+use App\Entity\Figure;
 use App\Entity\Media;
 use App\Form\CommentType;
 use App\Form\FigureType;
 use App\Form\MediaType;
 use App\Form\VideoType;
-use App\Repository\CommentsRepository;
-use App\Repository\FiguresRepository;
+use App\Repository\CommentRepository;
+use App\Repository\FigureRepository;
 use App\Repository\GroupsRepository;
 use App\Repository\MediaRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,17 +29,17 @@ class FigureController extends AbstractController
         return md5(uniqid());
     }
     #[Route('/', name: 'all_figure')]
-    public function all(FiguresRepository $figuresRepo, MediaRepository $mediaRepo, PaginatorInterface $paginator, Request $request): Response
+    public function all(FigureRepository $figureRepo, MediaRepository $mediaRepo, PaginatorInterface $paginator, Request $request): Response
     {
         if ($this->getUser()){
             $user = $this->getUser()->getId();
-            $figuresUser = $figuresRepo->findby(['user' => $user]);
+            $figuresUser = $figureRepo->findby(['user' => $user]);
         }
         else{
             $user = null;
             $figuresUser = null;
         }
-        $figures = $figuresRepo->findAll();
+        $figures = $figureRepo->findAll();
 
 
         $figuresAll = $paginator->paginate(
@@ -59,10 +58,10 @@ class FigureController extends AbstractController
         ]);
     }
     #[Route('/mes-figures', name: 'all_figure_user')]
-    public function allFiguresUser(FiguresRepository $figuresRepo, MediaRepository $mediaRepo, PaginatorInterface $paginator, Request $request): Response
+    public function allFiguresUser(FigureRepository $figureRepo, MediaRepository $mediaRepo, PaginatorInterface $paginator, Request $request): Response
     {
         $user = $this->getUser();
-        $figures = $figuresRepo->findby(['user' => $user]);
+        $figures = $figureRepo->findby(['user' => $user]);
 
         $figuresAll = $paginator->paginate(
             $figures, // Requête contenant les données à paginer (ici nos articles)
@@ -79,13 +78,13 @@ class FigureController extends AbstractController
     }
 
     #[Route('/figure/{id}', name: 'single_figure')]
-    public function single(Figures $figures, PaginatorInterface $paginator, MediaRepository $mediaRepo,FiguresRepository $figuresRepo, GroupsRepository $groupsRepo, $id, Request $request, EntityManagerInterface $manager, CommentsRepository $commentsRepo): Response
+    public function single(Figure $figure, PaginatorInterface $paginator, MediaRepository $mediaRepo, FigureRepository $figureRepo, GroupsRepository $groupsRepo, $id, Request $request, EntityManagerInterface $manager, CommentRepository $commentRepo): Response
     {
         $groups = $groupsRepo->findAll();
-        $figureGroup = $figuresRepo->findOneBy(['id' => $id]);
+        $figureGroup = $figureRepo->findOneBy(['id' => $id]);
 //dd($figureGroup->getGroups()->getFigureGroup());
-        $figure = $figures;
-        $figureComments = $commentsRepo->findBy(['figureId' => $id,]);
+        $figures = $figure;
+        $figureComments = $commentRepo->findBy(['figureId' => $id,]);
         //dd($figureComments);
         $figureCommentsPaginator = $paginator->paginate(
             $figureComments, // Requête contenant les données à paginer (ici nos articles)
@@ -96,14 +95,14 @@ class FigureController extends AbstractController
 
         if ($this->getUser()){
             $user = $this->getUser()->getId();
-            $figuresUser = $figuresRepo->findby(['user' => $user]);
+            $figuresUser = $figureRepo->findby(['user' => $user]);
         }
         else{
             $user = null;
             $figuresUser = null;
         }
 
-        $mediaExist = $mediaRepo->findBy(['figure' => $figure->getId()]);
+        $mediaExist = $mediaRepo->findBy(['figure' => $figures->getId()]);
         if ($mediaExist =! null) {
             $ImgByFigure = $mediaRepo->findBy(['image' => true, 'figure' => $figure->getId()]);
             $VideoByFigure = $mediaRepo->findBy(['image' => false, 'figure' => $figure->getId()]);
@@ -111,7 +110,7 @@ class FigureController extends AbstractController
         }
         //dd($group->getFigureGroup());
 
-        $comment = New Comments();
+        $comment = New Comment();
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
 
@@ -142,10 +141,10 @@ class FigureController extends AbstractController
     }
 
     #[Route('/figures/ajouter', name: 'add_figure')]
-    public function add(Request $request, EntityManagerInterface $manager, FiguresRepository $figureRepo, GroupsRepository $groupsRepo): Response
+    public function add(Request $request, EntityManagerInterface $manager, FigureRepository $figureRepo, GroupsRepository $groupsRepo): Response
     {
 
-        $figure = new Figures;
+        $figure = new Figure;
 //ajout d'utilisateur en session
         $user = $this->getUser();
         $groups = $groupsRepo->findAll();
@@ -190,7 +189,7 @@ class FigureController extends AbstractController
         ]);
     }
     #[Route('/figures/editer/{slug}', name: 'edit_figure')]
-    public function edit( FiguresRepository $figureRepo, Figures $figure, MediaRepository $mediaRepo, $slug, Request $request, EntityManagerInterface $manager): Response
+    public function edit(FigureRepository $figureRepo, Figure $figure, MediaRepository $mediaRepo, $slug, Request $request, EntityManagerInterface $manager): Response
     {
         $figureUser = $figure->getUser();
         //TODO securite, on ne peut pas acceder si on n'est pas l'utilisateur
@@ -290,7 +289,7 @@ class FigureController extends AbstractController
         ]);
     }
     #[Route('/figures/suprimer/{id}', name: 'delete_figure')]
-    public function delete( EntityManagerInterface $manager, FiguresRepository $figureRepo, Figures $figure, MediaRepository $mediaRepo)//: Response
+    public function delete(EntityManagerInterface $manager, FigureRepository $figureRepo, Figure $figure, MediaRepository $mediaRepo)//: Response
     {
         $figureUser = $figure->getUser();
         //TODO securite, on ne peut pas acceder si on n'est pas l'utilisateur
