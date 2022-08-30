@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Comments;
+use App\Entity\Comment;
 use App\Entity\Figures;
 use App\Entity\Groups;
 use App\Entity\Media;
@@ -10,7 +10,7 @@ use App\Form\CommentType;
 use App\Form\FigureType;
 use App\Form\MediaType;
 use App\Form\VideoType;
-use App\Repository\CommentsRepository;
+use App\Repository\CommentRepository;
 use App\Repository\FiguresRepository;
 use App\Repository\GroupsRepository;
 use App\Repository\MediaRepository;
@@ -79,13 +79,13 @@ class FigureController extends AbstractController
     }
 
     #[Route('/figure/{id}', name: 'single_figure')]
-    public function single(Figures $figures, PaginatorInterface $paginator, MediaRepository $mediaRepo,FiguresRepository $figuresRepo, GroupsRepository $groupsRepo, $id, Request $request, EntityManagerInterface $manager, CommentsRepository $commentsRepo): Response
+    public function single(Figures $figures, PaginatorInterface $paginator, MediaRepository $mediaRepo, FiguresRepository $figuresRepo, GroupsRepository $groupsRepo, $id, Request $request, EntityManagerInterface $manager, CommentRepository $commentRepo): Response
     {
         $groups = $groupsRepo->findAll();
         $figureGroup = $figuresRepo->findOneBy(['id' => $id]);
 //dd($figureGroup->getGroups()->getFigureGroup());
         $figure = $figures;
-        $figureComments = $commentsRepo->findBy(['figureId' => $id,]);
+        $figureComments = $commentRepo->findBy(['figureId' => $id,]);
         //dd($figureComments);
         $figureCommentsPaginator = $paginator->paginate(
             $figureComments, // Requête contenant les données à paginer (ici nos articles)
@@ -111,7 +111,7 @@ class FigureController extends AbstractController
         }
         //dd($group->getFigureGroup());
 
-        $comment = New Comments();
+        $comment = New Comment();
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
 
