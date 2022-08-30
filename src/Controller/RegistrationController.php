@@ -64,7 +64,7 @@ class RegistrationController extends AbstractController
             $mail = (new Email())
                 ->from("contact@snowtricks.com")
                 ->to($user->getEmail())
-                ->text("Voici votre lien de verification de mail https://127.0.0.1:8001/activate/" . $token)
+                ->text("Voici votre lien de verification de mail https://127.0.0.1:8000/activate/" . $token)
                 ->subject("Activation de compte sur SnowTricks pour " . $user->getUserName());
             //TODO chager le url par le path dynamique de url
 
@@ -136,7 +136,7 @@ class RegistrationController extends AbstractController
                 $mail = (new Email())
                     ->from("contact@snowtricks.com")
                     ->to($user->getEmail())
-                    ->text("Voici votre lien de verification de mail https://127.0.0.1:8001/nouveau-mot-de-passe/" . $token)
+                    ->text("Voici votre lien de verification de mail https://127.0.0.1:8000/nouveau-mot-de-passe/" . $token)
                     ->subject("Activation de compte sur SnowTricks pour " . $user->getUserName());
                 //TODO chager le url par le path dynamique de url
 
