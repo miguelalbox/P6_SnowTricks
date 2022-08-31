@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\GroupsRepository;
+use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: GroupsRepository::class)]
-class Groups
+#[ORM\Entity(repositoryClass: CategoryRepository::class)]
+class Category
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -16,9 +16,9 @@ class Groups
     private $id;
 
     #[ORM\Column(type: 'string', length: 20)]
-    private $figure_group;
+    private $figure_category;
 
-    #[ORM\OneToMany(mappedBy: 'groups', targetEntity: Figure::class)]
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Figure::class)]
     private $figures;
 
     public function __construct()
@@ -31,14 +31,14 @@ class Groups
         return $this->id;
     }
 
-    public function getFigureGroup(): ?string
+    public function getFigureCategory(): ?string
     {
-        return $this->figure_group;
+        return $this->figure_category;
     }
 
-    public function setFigureGroup(string $figure_group): self
+    public function setFigureCategory(string $figure_category): self
     {
-        $this->figure_group = $figure_group;
+        $this->figure_category = $figure_category;
 
         return $this;
     }
@@ -55,7 +55,7 @@ class Groups
     {
         if (!$this->figures->contains($figure)) {
             $this->figures[] = $figure;
-            $figure->setGroups($this);
+            $figure->setCategory($this);
         }
 
         return $this;
@@ -65,8 +65,8 @@ class Groups
     {
         if ($this->figures->removeElement($figure)) {
             // set the owning side to null (unless already changed)
-            if ($figure->getGroups() === $this) {
-                $figure->setGroups(null);
+            if ($figure->getCategory() === $this) {
+                $figure->setCategory(null);
             }
         }
 

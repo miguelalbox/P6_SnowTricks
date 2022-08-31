@@ -11,7 +11,7 @@ use App\Form\MediaType;
 use App\Form\VideoType;
 use App\Repository\CommentRepository;
 use App\Repository\FigureRepository;
-use App\Repository\GroupsRepository;
+use App\Repository\CategoryRepository;
 use App\Repository\MediaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -78,9 +78,9 @@ class FigureController extends AbstractController
     }
 
     #[Route('/figure/{id}', name: 'single_figure')]
-    public function single(Figure $figure, PaginatorInterface $paginator, MediaRepository $mediaRepo, FigureRepository $figureRepo, GroupsRepository $groupsRepo, $id, Request $request, EntityManagerInterface $manager, CommentRepository $commentRepo): Response
+    public function single(Figure $figure, PaginatorInterface $paginator, MediaRepository $mediaRepo, FigureRepository $figureRepo, CategoryRepository $categoryRepo, $id, Request $request, EntityManagerInterface $manager, CommentRepository $commentRepo): Response
     {
-        $groups = $groupsRepo->findAll();
+        $groups = $categoryRepo->findAll();
         $figureGroup = $figureRepo->findOneBy(['id' => $id]);
 //dd($figureGroup->getGroups()->getFigureGroup());
         $figures = $figure;
@@ -132,7 +132,7 @@ class FigureController extends AbstractController
             'mediasImg' => $ImgByFigure,
             'mediasVideo' => $VideoByFigure,
             'portrait' => $portrait,
-            'group' => $figureGroup->getGroups()->getFigureGroup(),
+            'group' => $figureGroup->getCategory()->getFigureCategory(),
             'user' => $user,
             'figuresUser' => $figuresUser,
             'commentForm' => $form->createView(),
@@ -141,17 +141,17 @@ class FigureController extends AbstractController
     }
 
     #[Route('/figures/ajouter', name: 'add_figure')]
-    public function add(Request $request, EntityManagerInterface $manager, FigureRepository $figureRepo, GroupsRepository $groupsRepo): Response
+    public function add(Request $request, EntityManagerInterface $manager, FigureRepository $figureRepo, CategoryRepository $categoryRepo): Response
     {
 
         $figure = new Figure;
 //ajout d'utilisateur en session
         $user = $this->getUser();
-        $groups = $groupsRepo->findAll();
+        $groups = $categoryRepo->findAll();
         $groupsFigure = [];
 
         foreach ($groups as $group){
-            $groupsFigure[$group->getFigureGroup()] = $group->getFigureGroup();
+            $groupsFigure[$group->getFigureCategory()] = $group->getFigureCategory();
         }
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);

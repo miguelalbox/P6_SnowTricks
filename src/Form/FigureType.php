@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Figure;
-use App\Entity\Groups;
+use App\Entity\Category;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -30,9 +30,9 @@ class FigureType extends AbstractType
                     'placeholder' => 'Ajoutez la description de votre figure'
                 ]
             ])
-            ->add('groups', EntityType::class, [
-                'class' => Groups::class,
-                'choice_label' => 'figure_group'
+            ->add('category', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'figure_category'
             ])
 
         ;

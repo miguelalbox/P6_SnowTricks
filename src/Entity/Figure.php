@@ -24,9 +24,9 @@ class Figure
     #[ORM\Column(type: 'text')]
     private $description;
 
-    #[ORM\ManyToOne(targetEntity: Groups::class, inversedBy: 'figures')]
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'figures')]
     #[ORM\JoinColumn(nullable: false)]
-    private $groups;
+    private $category;
 
     #[ORM\Column(type: 'datetime_immutable')]
     private $createdAt;
@@ -97,14 +97,14 @@ class Figure
         return $this;
     }
 
-    public function getGroups(): ?Groups
+    public function getCategory(): ?Category
     {
-        return $this->groups;
+        return $this->category;
     }
 
-    public function setGroups(?Groups $groups): self
+    public function setCategory(?Category $category): self
     {
-        $this->groups = $groups;
+        $this->category = $category;
 
         return $this;
     }
