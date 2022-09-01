@@ -82,10 +82,10 @@ class FigureController extends AbstractController
     {
         $groups = $categoryRepo->findAll();
         $figureGroup = $figureRepo->findOneBy(['id' => $id]);
-//dd($figureGroup->getGroups()->getFigureGroup());
+
         $figures = $figure;
         $figureComments = $commentRepo->findBy(['figureId' => $id,]);
-        //dd($figureComments);
+
         $figureCommentsPaginator = $paginator->paginate(
             $figureComments, // Requête contenant les données à paginer (ici nos articles)
             $request->query->getInt('page', 1,), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
@@ -108,7 +108,7 @@ class FigureController extends AbstractController
             $VideoByFigure = $mediaRepo->findBy(['image' => false, 'figure' => $figure->getId()]);
             $portrait = $mediaRepo->findOneBy(['main' => true, 'figure' => $figure->getId()]);
         }
-        //dd($group->getFigureGroup());
+
 
         $comment = New Comment();
         $form = $this->createForm(CommentType::class, $comment);
@@ -145,7 +145,7 @@ class FigureController extends AbstractController
     {
 
         $figure = new Figure;
-//ajout d'utilisateur en session
+        //ajout d'utilisateur en session
         $user = $this->getUser();
         $groups = $categoryRepo->findAll();
         $groupsFigure = [];
@@ -298,12 +298,6 @@ class FigureController extends AbstractController
             return $this->redirectToRoute('all_figure');
         }
 
-        //$figures = $figureRepo->findOneBy(['slug' => $slug]);
-
-        //$mediasFigures = $mediaRepo->findBy(['figure' => $figure->getId()]);
-        //TODO suprimer image en cascade je recupere les images de la figure puis pour chaque une des entite je suprime le fichier avec un boucle for avec unlink
-
-        //TODO il suprime une seul image pour le moment
 
 
         foreach ($figure->getMedia() as $media){
@@ -347,7 +341,7 @@ class FigureController extends AbstractController
             $manager->flush();
 
 
-            //return $this->redirect($request->request->get('referer'));
+
             return $this->redirectToRoute('edit_figure', [
                 'slug' => $slug
             ]);
@@ -371,7 +365,6 @@ class FigureController extends AbstractController
             $manager->flush();
 
 
-            //return $this->redirect($request->request->get('referer'));
             return $this->redirectToRoute('edit_figure', [
                 'slug' => $slug
             ]);

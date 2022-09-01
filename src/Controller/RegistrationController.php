@@ -44,8 +44,6 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
-            //TODO setToken provisoire
-            $user->setToken('test');
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -66,7 +64,7 @@ class RegistrationController extends AbstractController
                 ->to($user->getEmail())
                 ->text("Voici votre lien de verification de mail https://127.0.0.1:8000/activate/" . $token)
                 ->subject("Activation de compte sur SnowTricks pour " . $user->getUserName());
-            //TODO chager le url par le path dynamique de url
+
 
             $mailer->send($mail);
 
@@ -98,7 +96,6 @@ class RegistrationController extends AbstractController
 
         $user->setActivated('1');
         $user->setToken(null);
-//TODO je n'arrive pas a metre le setToken en null
 
         $manager->persist($user);
         $manager->flush();
@@ -138,7 +135,7 @@ class RegistrationController extends AbstractController
                     ->to($user->getEmail())
                     ->text("Voici votre lien de verification de mail https://127.0.0.1:8000/nouveau-mot-de-passe/" . $token)
                     ->subject("Activation de compte sur SnowTricks pour " . $user->getUserName());
-                //TODO chager le url par le path dynamique de url
+
 
                 $mailer->send($mail);
 
