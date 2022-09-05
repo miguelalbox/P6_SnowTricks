@@ -39,6 +39,16 @@ class FigureRepository extends ServiceEntityRepository
         }
     }
 
+    public function figureOrder()
+    {
+        return $this->createQueryBuilder('f')
+
+            ->orderBy('f.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 //    /**
 //     * @return Figure[] Returns an array of Figure objects
 //     */

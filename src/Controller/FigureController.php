@@ -39,13 +39,14 @@ class FigureController extends AbstractController
             $user = null;
             $figuresUser = null;
         }
-        $figures = $figureRepo->findAll();
+        $figures = $figureRepo->figureOrder();
 
 
         $figuresAll = $paginator->paginate(
             $figures, // Requête contenant les données à paginer (ici nos articles)
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
             9 // Nombre de résultats par page
+
         );
 
         $portrait = $mediaRepo->findBy([  'figure' => $figures]);
@@ -61,7 +62,7 @@ class FigureController extends AbstractController
     public function allFiguresUser(FigureRepository $figureRepo, MediaRepository $mediaRepo, PaginatorInterface $paginator, Request $request): Response
     {
         $user = $this->getUser();
-        $figures = $figureRepo->findby(['user' => $user]);
+        $figures = $figureRepo->findby(['user' => $user], ['createdAt' => 'DESC']);
 
         $figuresAll = $paginator->paginate(
             $figures, // Requête contenant les données à paginer (ici nos articles)
@@ -84,7 +85,7 @@ class FigureController extends AbstractController
         $figureGroup = $figureRepo->findOneBy(['id' => $id]);
 
         $figures = $figure;
-        $figureComments = $commentRepo->findBy(['figureId' => $id,]);
+        $figureComments = $commentRepo->findBy(['figureId' => $id], ['createdAt' => 'DESC']);
 
         $figureCommentsPaginator = $paginator->paginate(
             $figureComments, // Requête contenant les données à paginer (ici nos articles)
@@ -144,6 +145,10 @@ class FigureController extends AbstractController
     public function add(Request $request, EntityManagerInterface $manager, FigureRepository $figureRepo, CategoryRepository $categoryRepo): Response
     {
 
+        if ($this->getUser() == null) {
+            $this->addFlash('error', 'Vous n\'nest pas connecté');
+            return $this->redirectToRoute('all_figure');
+        }
         $figure = new Figure;
         //ajout d'utilisateur en session
         $user = $this->getUser();
@@ -315,6 +320,7 @@ class FigureController extends AbstractController
 
             $manager->remove($figure);
             $manager->flush();
+            $this->addFlash('success', 'La figure a bien été suprimé');
 
             return $this->redirectToRoute('all_figure');
 
@@ -339,7 +345,7 @@ class FigureController extends AbstractController
 
             $manager->remove($media);
             $manager->flush();
-
+            $this->addFlash('success', 'Le media a bien été suprimée');
 
 
             return $this->redirectToRoute('edit_figure', [
@@ -363,7 +369,7 @@ class FigureController extends AbstractController
 
             $manager->persist($media);
             $manager->flush();
-
+            $this->addFlash('success', 'Le portrait a bien été suprié');
 
             return $this->redirectToRoute('edit_figure', [
                 'slug' => $slug
